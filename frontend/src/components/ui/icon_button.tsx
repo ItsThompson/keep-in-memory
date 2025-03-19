@@ -9,7 +9,9 @@ interface IconButtonProps {
     className?: string;
     width: number;
     height: number;
-    onClick: () => void;
+    onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }
 
 export default function IconButton({
@@ -20,12 +22,16 @@ export default function IconButton({
     width,
     height,
     onClick,
+    onMouseEnter,
+    onMouseLeave,
 }: IconButtonProps) {
     return (
         <button
             type="button"
             className={`font-medium rounded-full text-sm text-center inline-flex items-center ${className}`}
             onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             <Image
                 className="hover:opacity-80"
