@@ -14,6 +14,7 @@ interface IconButtonProps {
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
+    isButton?: boolean;
 }
 
 export default function IconButton({
@@ -28,11 +29,15 @@ export default function IconButton({
     onClick,
     onMouseEnter,
     onMouseLeave,
+    isButton = false,
 }: IconButtonProps) {
+
+    const hoverInteraction = isButton ? "hover:scale-110 transition ease-in-out delay-50 duration-150" : "";
+
     return (
         <button
             type="button"
-            className={`rounded-lg text-center inline-flex items-center ${className}`}
+            className={`rounded-lg text-center inline-flex items-center ${className} ${hoverInteraction}`}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
