@@ -20,7 +20,15 @@ export default function GameOptions() {
     ];
     const gameDurationOptions = ["06", "12", "24", "48"];
 
-    const [gameSettings, setGameSettings] = useState(getGameSettings());
+    const [gameSettings, setGameSettings] = useState({
+        gameMode: gameModeOptions[defaultIndices.gameModeIndex],
+        gameItemType: gameItemOptions[defaultIndices.gameOptionsIndex],
+        gameDuration: parseInt(gameDurationOptions[defaultIndices.gameDurationIndex]),
+    });
+
+    useEffect(() => {
+        setGameSettings(getGameSettings());
+    }, []);
 
     useEffect(() => {
         localStorage.setItem("gameSettings", JSON.stringify(gameSettings));
