@@ -34,6 +34,8 @@ export default function IconButton({
 
     const hoverInteraction = isButton ? "hover:scale-110 transition ease-in-out delay-50 duration-150" : "";
 
+    const imageClassName = buttonText === "" ? "hover:opacity-80" : "hover:opacity-80 mr-2";
+
     return (
         <button
             type="button"
@@ -43,7 +45,7 @@ export default function IconButton({
             onMouseLeave={onMouseLeave}
         >
             <Image
-                className="hover:opacity-80 mr-2"
+                className={imageClassName}
                 src={src}
                 alt={alt}
                 width={width}

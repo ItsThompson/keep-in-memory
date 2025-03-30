@@ -1,62 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tabs from "./tabs";
+import { getGameSettings } from "@/lib/utils";
 
 export default function GameOptions() {
     const defaultIndices = {
         gameModeIndex: 1,
         gameOptionsIndex: 2,
-        gameSpeedIndex: 2,
+        gameDurationIndex: 2,
     };
 
-    const [gameSettings, setGameSettings] = useState({
-        gameModeIndex: defaultIndices.gameModeIndex,
-        gameOptionsIndex: defaultIndices.gameOptionsIndex,
-        gameSpeedIndex: defaultIndices.gameSpeedIndex,
-    });
+    const gameModeOptions = ["remove one", "recall all"];
+    const gameItemOptions = [
+        "colors & shapes",
+        "locations",
+        "items",
+        "license plate",
+    ];
+    const gameDurationOptions = ["06", "12", "24", "48"];
+
+    const [gameSettings, setGameSettings] = useState(getGameSettings());
+
+    useEffect(() => {
+        localStorage.setItem("gameSettings", JSON.stringify(gameSettings));
+    }, [gameSettings]);
+
     return (
         <div className="flex items-center justify-center sm:justify-between w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-2 mb-2 gap-2 sm:gap-5">
             <Tabs
-                items={["remove one", "recall all"]}
+                items={gameModeOptions}
                 defaultSelectedIndex={defaultIndices.gameModeIndex}
                 className="ml-8"
                 updatedTabIndex={(index) => {
                     setGameSettings({
                         ...gameSettings,
-                        gameModeIndex: index,
+                        gameMode: gameModeOptions[index],
                     });
-                    console.log(gameSettings);
                 }}
             />
             <span className="text-white font-bold">|</span>
             <Tabs
-                items={[
-                    "colors & shapes",
-                    "locations",
-                    "items",
-                    "license plate",
-                ]}
+                items={gameItemOptions}
                 defaultSelectedIndex={defaultIndices.gameOptionsIndex}
                 updatedTabIndex={(index) => {
                     setGameSettings({
                         ...gameSettings,
-                        gameOptionsIndex: index,
+                        gameItemType: gameItemOptions[index],
                     });
-                    console.log(gameSettings);
                 }}
             />
             <span className="text-white font-bold">|</span>
             <Tabs
-                items={["06", "12", "24", "48"]}
-                defaultSelectedIndex={defaultIndices.gameSpeedIndex}
+                items={gameDurationOptions}
+                defaultSelectedIndex={defaultIndices.gameDurationIndex}
                 className="mr-8"
                 updatedTabIndex={(index) => {
                     setGameSettings({
                         ...gameSettings,
-                        gameSpeedIndex: index,
+                        gameDuration: parseInt(gameDurationOptions[index]),
                     });
-                    console.log(gameSettings);
                 }}
             />
         </div>
