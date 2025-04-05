@@ -55,18 +55,17 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const onStartGame = () => {
         setGameState(GameState.IN_PROGRESS);
-        // TODO: generate items in the game board
     };
 
     const onSubmitItems = (items: string[]) => {
         console.log(items);
         console.log("Items submitted");
         setGameState(GameState.ENDED);
-    }
+    };
 
     const currentStage = GameStages({
         gameState,
-       unlockTime,
+        unlockTime,
         onTimerExpired,
         restartGame,
         onStartGame,

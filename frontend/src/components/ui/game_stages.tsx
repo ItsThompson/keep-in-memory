@@ -2,6 +2,9 @@ import { GameState } from "@/constants/game_states";
 import IconButton from "./icon_button";
 import Timer from "./timer";
 import RemainingTime from "./remaining_time";
+import Board from "./board";
+import recall_list from "./recall_list";
+import RecallList from "./recall_list";
 
 interface GameArenaComponents {
     aboveBoard?: React.ReactElement;
@@ -52,7 +55,7 @@ export default function GameStages({
             aboveBoard: (
                 <Timer durationInSeconds={3} onTimeout={onTimerExpired} />
             ),
-            gameBoard: <div>game board with items</div>,
+            gameBoard: <Board />,
         },
         [GameState.LOCKED]: {
             gameBoard: (
@@ -75,17 +78,7 @@ export default function GameStages({
             ),
         },
         [GameState.RECALL]: {
-            gameBoard: (
-                <div>
-                    <p>Recall the items in the game board</p>
-                    <button
-                        className="bg-primary text-secondary p-2 font-bold rounded-lg"
-                        onClick={() => onSubmitItems(["item1", "item2"])}
-                    >
-                        Done
-                    </button>
-                </div>
-            ),
+            gameBoard: <RecallList onSubmitItems={onSubmitItems} />,
         },
         [GameState.ENDED]: {
             aboveBoard: <div>tabs of the board view and the recalled list</div>,
