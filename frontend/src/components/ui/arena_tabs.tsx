@@ -9,10 +9,10 @@ interface GameOptionsProps {
     updatedTabIndex?: (index: number) => void;
 }
 
-export default function Tabs({
+export default function ArenaTabs({
     items,
     defaultSelectedIndex,
-    className,
+    className = "",
     updatedTabIndex,
 }: GameOptionsProps) {
     const [selectedIndex, setSelectedIndex] = useState(defaultSelectedIndex);
@@ -28,13 +28,13 @@ export default function Tabs({
 
     return (
         <div
-            className={`flex flex-wrap items-center justify-center gap-8 ${className}`}
+            className={`w-full sm:w-3/4 flex flex-wrap items-center justify-around gap-2 m-2 p-2 bg-secondary rounded-lg ${className}`}
         >
             {items.map((item, index) => (
                 <button
                     key={index}
-                    className={`font-bold hover:cursor-pointer text-sm
-                    ${selectedIndex === index ? "text-primary" : "text-white"}`}
+                    className={`flex-1 font-bold hover:cursor-pointer p-1
+                    ${selectedIndex === index ? "text-black bg-primary rounded" : "text-white"}`}
                     onClick={() => handleSelectedIndex(index)}
                 >
                     {item}

@@ -15,7 +15,7 @@ export default function Timer({
     useEffect(() => {
         timerRef.current = setInterval(() => {
             setTimeInSeconds((seconds) => {
-                if (seconds === 0) {
+                if (seconds <= 0) {
                     clearInterval(timerRef.current!);
                     return 0;
                 }

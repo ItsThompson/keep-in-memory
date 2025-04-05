@@ -3,8 +3,9 @@ import IconButton from "./icon_button";
 import Timer from "./timer";
 import RemainingTime from "./remaining_time";
 import Board from "./board";
-import recall_list from "./recall_list";
 import RecallList from "./recall_list";
+import EndScreen from "./end_screen";
+import { useState } from "react";
 
 interface GameArenaComponents {
     aboveBoard?: React.ReactElement;
@@ -29,6 +30,8 @@ export default function GameStages({
     onStartGame,
     onSubmitItems,
 }: GameStagesProps): GameArenaComponents {
+    const [recallList, setRecallList] = useState<string[]>([]);
+
     const stages: Record<GameState, GameArenaComponents> = {
         [GameState.NOT_STARTED]: {
             gameBoard: (
@@ -53,7 +56,7 @@ export default function GameStages({
             //     <Timer durationInSeconds={60} onTimeout={onTimerExpired} />
             // ),
             aboveBoard: (
-                <Timer durationInSeconds={3} onTimeout={onTimerExpired} />
+                <Timer durationInSeconds={1} onTimeout={onTimerExpired} />
             ),
             gameBoard: <Board />,
         },
@@ -78,12 +81,16 @@ export default function GameStages({
             ),
         },
         [GameState.RECALL]: {
-            gameBoard: <RecallList onSubmitItems={onSubmitItems} />,
+            gameBoard: (
+                <RecallList
+                    onSubmitItems={(items) => {
+                        setRecallList(items);
+                        onSubmitItems(items);
+                    }}
+                />
+            ),
         },
-        [GameState.ENDED]: {
-            aboveBoard: <div>tabs of the board view and the recalled list</div>,
-            gameBoard: <div>tab views</div>,
-        },
+        [GameState.ENDED]: EndScreen(recallList),
     };
 
     return stages[gameState] || stages[GameState.NOT_STARTED];

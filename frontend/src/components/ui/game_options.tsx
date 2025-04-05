@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Tabs from "./tabs";
+import GameOptionTabs from "./game_option_tabs";
 import { getGameSettings } from "@/lib/utils";
 
 export default function GameOptions() {
@@ -36,7 +36,7 @@ export default function GameOptions() {
 
     return (
         <div className="flex items-center justify-center sm:justify-between w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-2 mb-2 gap-2 sm:gap-5">
-            <Tabs
+            <GameOptionTabs
                 items={gameModeOptions}
                 defaultSelectedIndex={defaultIndices.gameModeIndex}
                 className="ml-8"
@@ -48,7 +48,7 @@ export default function GameOptions() {
                 }}
             />
             <span className="text-white font-bold">|</span>
-            <Tabs
+            <GameOptionTabs
                 items={gameItemOptions}
                 defaultSelectedIndex={defaultIndices.gameOptionsIndex}
                 updatedTabIndex={(index) => {
@@ -59,7 +59,7 @@ export default function GameOptions() {
                 }}
             />
             <span className="text-white font-bold">|</span>
-            <Tabs
+            <GameOptionTabs
                 items={gameDurationOptions}
                 defaultSelectedIndex={defaultIndices.gameDurationIndex}
                 className="mr-8"
