@@ -1,4 +1,4 @@
-import { GameState } from "@/constants/game_states";
+import { GameData, GameState } from "@/constants/game_states";
 import IconButton from "./icon_button";
 import Timer from "./timer";
 import RemainingTime from "./remaining_time";
@@ -6,6 +6,7 @@ import Board from "./board";
 import RecallList from "./recall_list";
 import EndScreen from "./end_screen";
 import { useState } from "react";
+import StartGameButton from "./start_game_button";
 
 interface GameArenaComponents {
     aboveBoard?: React.ReactElement;
@@ -31,34 +32,25 @@ export default function GameStages({
     onSubmitItems,
 }: GameStagesProps): GameArenaComponents {
     const [recallList, setRecallList] = useState<string[]>([]);
+    const [gameData, setGameData] = useState<GameData | null>(null);
 
     const stages: Record<GameState, GameArenaComponents> = {
         [GameState.NOT_STARTED]: {
             gameBoard: (
                 <div className="h-full flex justify-center items-center">
-                    <IconButton
-                        src="/start.svg"
-                        alt="game start logo"
-                        description="game start button"
-                        className="bg-primary p-2"
-                        textClassName="text-secondary"
-                        buttonText="start"
-                        width={24}
-                        height={24}
-                        isButton={true}
-                        onClick={onStartGame}
-                    />
+                <StartGameButton onGameStartClick={(gameData) => {
+                    setGameData(gameData);
+                    onStartGame();
+                }}/>
                 </div>
             ),
         },
         [GameState.IN_PROGRESS]: {
-            // aboveBoard: (
-            //     <Timer durationInSeconds={60} onTimeout={onTimerExpired} />
-            // ),
             aboveBoard: (
                 <Timer durationInSeconds={1} onTimeout={onTimerExpired} />
+                //     <Timer durationInSeconds={60} onTimeout={onTimerExpired} />
             ),
-            gameBoard: <Board />,
+            gameBoard: <Board gameData={gameData!}/>,
         },
         [GameState.LOCKED]: {
             gameBoard: (

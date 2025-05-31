@@ -13,3 +13,14 @@ export interface GameArenaComponents {
     gameBoard?: ReactElement;
     belowBoard?: ReactElement;
 }
+
+export interface GameData {
+    gameId: string;
+    items: [GameItem];
+}
+
+export interface GameItem {
+    id: string;
+    objectUrl: string;
+    names: string[];
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { GameState } from "@/constants/game_states";
+import { GameData, GameState } from "@/constants/game_states";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
