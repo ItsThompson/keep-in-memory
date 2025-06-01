@@ -1,6 +1,6 @@
 "use client";
 
-import { GameData, GameState } from "@/constants/game_states";
+import { GameState } from "@/constants/game_states";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
@@ -36,8 +36,6 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     }, [gameState, onGameStateChange]);
 
     const onTimerExpired = () => {
-        return; // Temporarily disable timer expiration logic
-
         setGameState(GameState.LOCKED);
 
         const gameSettings = getGameSettings();
