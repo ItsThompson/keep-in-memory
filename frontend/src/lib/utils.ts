@@ -40,3 +40,7 @@ export function getGameSettings(): {
         };
     }
 }
+
+export function replaceSpacesWithUnderscores(str: string): string {
+    return str.replace(/\s+/g, "_");
+}

@@ -38,19 +38,20 @@ export default function GameStages({
         [GameState.NOT_STARTED]: {
             gameBoard: (
                 <div className="h-full flex justify-center items-center">
-                <StartGameButton onGameStartClick={(gameData) => {
-                    setGameData(gameData);
-                    onStartGame();
-                }}/>
+                    <StartGameButton
+                        onGameStartClick={(gameData) => {
+                            setGameData(gameData);
+                            onStartGame();
+                        }}
+                    />
                 </div>
             ),
         },
         [GameState.IN_PROGRESS]: {
             aboveBoard: (
-                <Timer durationInSeconds={1} onTimeout={onTimerExpired} />
-                //     <Timer durationInSeconds={60} onTimeout={onTimerExpired} />
+                <Timer durationInSeconds={60} onTimeout={onTimerExpired} />
             ),
-            gameBoard: <Board gameData={gameData!}/>,
+            gameBoard: <Board gameData={gameData!} />,
         },
         [GameState.LOCKED]: {
             gameBoard: (

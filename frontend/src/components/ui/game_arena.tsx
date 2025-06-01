@@ -36,6 +36,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     }, [gameState, onGameStateChange]);
 
     const onTimerExpired = () => {
+        return; // Temporarily disable timer expiration logic
+
         setGameState(GameState.LOCKED);
 
         const gameSettings = getGameSettings();
@@ -71,6 +73,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         onStartGame,
         onSubmitItems,
     });
+
 
     return (
         <div className="flex flex-col items-center m-2 w-full h-full">
