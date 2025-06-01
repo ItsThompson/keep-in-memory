@@ -21,23 +21,25 @@ export default function Board({ gameData }: BoardProps) {
     const [positions, setPositions] = useState<Position[]>([]);
 
     const imageSize = 100; // Size of each image in pixels
-    const edgeBuffer = 10;
+    const imagePadding = 50; // Padding around the images to prevent overlap
 
     useEffect(() => {
         const placeImages = () => {
             const container = containerRef.current;
             if (!container) return;
 
-            const containerWidth = container.clientWidth - edgeBuffer * 2;
-            const containerHeight = container.clientHeight - edgeBuffer * 2;
+            const containerWidth = container.clientWidth - imagePadding * 2;
+            const containerHeight = container.clientHeight - imagePadding * 2;
 
             const placed: Position[] = [];
 
             const doesOverlap = (position: Position): boolean => {
                 return placed.some((placedPosition) => {
                     return (
-                        Math.abs(placedPosition.x - position.x) < imageSize &&
-                        Math.abs(placedPosition.y - position.y) < imageSize
+                        Math.abs(placedPosition.x - position.x) <
+                            imageSize + imagePadding &&
+                        Math.abs(placedPosition.y - position.y) <
+                            imageSize + imagePadding
                     );
                 });
             };
@@ -48,10 +50,10 @@ export default function Board({ gameData }: BoardProps) {
                 do {
                     x =
                         Math.random() * (containerWidth - imageSize) +
-                        edgeBuffer;
+                        imagePadding;
                     y =
                         Math.random() * (containerHeight - imageSize) +
-                        edgeBuffer;
+                        imagePadding;
                     attempts++;
                 } while (doesOverlap({ x, y }) && attempts < 100);
 
