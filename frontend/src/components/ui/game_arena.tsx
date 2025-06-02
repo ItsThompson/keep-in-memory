@@ -48,6 +48,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     };
 
     const restartGame = () => {
+        // TODO: HERE ADD API CALL TO RESTART GAME (NEED TO IMPLEMENT LAMBDA)
+        //  - DELETE GAME DATA
         setGameState(GameState.NOT_STARTED);
         setUnlockTime(null);
         localStorage.removeItem("expiryTime");
@@ -58,8 +60,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     };
 
     const onSubmitItems = (items: string[]) => {
-        console.log(items);
-        console.log("Items submitted");
+        // TODO: API CALL TO ADD RECALL LIST TO GAMEDATA
         setGameState(GameState.ENDED);
     };
 

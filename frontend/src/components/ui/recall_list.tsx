@@ -56,7 +56,7 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
                         type="submit"
                     >
                         <Image
-                            src="/reset.svg"
+                            src="/add.svg"
                             alt="Add Item Button"
                             width={32}
                             height={32}
