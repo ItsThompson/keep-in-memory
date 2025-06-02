@@ -89,6 +89,12 @@ export default function Board({ gameData }: BoardProps) {
                         left: `${pos.x}px`,
                         top: `${pos.y}px`,
                         objectFit: "contain",
+                        userSelect: "none",
+                        WebkitUserSelect: "none",
+                        MozUserSelect: "none",
+                        msUserSelect: "none",
+                        pointerEvents: "none", // Prevent interaction
+
                     }}
                 />
             ))}
