@@ -24,3 +24,16 @@ export interface GameItem {
     objectUrl: string;
     names: string[];
 }
+
+export enum ResultClassification {
+    TRUE_POSITIVE = "true_positive",
+    FALSE_POSITIVE = "false_positive",
+    FALSE_NEGATIVE = "false_negative",
+}
+
+export interface RecallResult {
+    itemId: string;
+    recalledItemName: string;
+    classification: ResultClassification;
+}
+

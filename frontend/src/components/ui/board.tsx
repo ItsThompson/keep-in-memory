@@ -1,4 +1,4 @@
-import { GameData } from "@/constants/game_states";
+import { GameData } from "@/constants/interfaces";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 interface BoardProps {

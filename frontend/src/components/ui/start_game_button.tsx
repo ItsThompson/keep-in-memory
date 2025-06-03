@@ -1,4 +1,4 @@
-import { GameData } from "@/constants/game_states";
+import { GameData } from "@/constants/interfaces";
 import IconButton from "./icon_button";
 import { getGameSettings, replaceSpacesWithUnderscores } from "@/lib/utils";
 

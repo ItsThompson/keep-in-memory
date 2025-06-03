@@ -1,4 +1,4 @@
-import { GameData, GameState } from "@/constants/game_states";
+import { GameData, GameState, RecallResult } from "@/constants/interfaces";
 import IconButton from "./icon_button";
 import Timer from "./timer";
 import RemainingTime from "./remaining_time";
@@ -20,7 +20,7 @@ interface GameStagesProps {
     onTimerExpired: () => void;
     restartGame: () => void;
     onStartGame: () => void;
-    onSubmitItems: (items: string[]) => void;
+    onSubmitItems: (items: string[]) => RecallResult[];
 }
 
 export default function GameStages({
@@ -31,7 +31,7 @@ export default function GameStages({
     onStartGame,
     onSubmitItems,
 }: GameStagesProps): GameArenaComponents {
-    const [recallList, setRecallList] = useState<string[]>([]);
+    const [recallResult, setRecallResult] = useState<RecallResult[]>([]);
     const [gameData, setGameData] = useState<GameData | null>(null);
 
     const stages: Record<GameState, GameArenaComponents> = {
@@ -77,13 +77,12 @@ export default function GameStages({
             gameBoard: (
                 <RecallList
                     onSubmitItems={(items) => {
-                        setRecallList(items);
-                        onSubmitItems(items);
+                        setRecallResult(onSubmitItems(items));
                     }}
                 />
             ),
         },
-        [GameState.ENDED]: EndScreen(recallList),
+        [GameState.ENDED]: EndScreen(recallResult),
     };
 
     return stages[gameState] || stages[GameState.NOT_STARTED];

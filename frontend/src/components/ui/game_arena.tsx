@@ -1,6 +1,10 @@
 "use client";
 
-import { GameState } from "@/constants/game_states";
+import {
+    GameState,
+    RecallResult,
+    ResultClassification,
+} from "@/constants/interfaces";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
@@ -61,7 +65,22 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const onSubmitItems = (items: string[]) => {
         // TODO: API CALL TO ADD RECALL LIST TO GAMEDATA
+        // - adds recall list to dynamodb row
         setGameState(GameState.ENDED);
+        let recallResult: RecallResult[] = [];
+        for (const item of items) {
+            recallResult.push({
+                itemId: "1",
+                recalledItemName: item,
+                classification:
+                    Math.random() > 0.5
+                        ? ResultClassification.TRUE_POSITIVE
+                        : Math.random() > 0.5
+                          ? ResultClassification.FALSE_POSITIVE
+                          : ResultClassification.FALSE_NEGATIVE,
+            });
+        }
+        return recallResult;
     };
 
     const currentStage = GameStages({
@@ -72,7 +91,6 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         onStartGame,
         onSubmitItems,
     });
-
 
     return (
         <div className="flex flex-col items-center m-2 w-full h-full">

@@ -4,7 +4,7 @@ import GameOptions from "@/components/ui/game_options";
 import Topbar from "@/components/ui/topbar";
 import GameArena from "@/components/ui/game_arena";
 import { useState } from "react";
-import { GameState } from "@/constants/game_states";
+import { GameState } from "@/constants/interfaces";
 
 export default function Home() {
     const [showGameOptions, setShowGameOptions] = useState(true);
