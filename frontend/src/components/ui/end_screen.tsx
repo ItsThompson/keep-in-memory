@@ -60,6 +60,7 @@ export default function EndScreen(
     }, [recallResults]);
 
     async function fetchCurrentGameData() {
+        // TODO: actually fetch from API
         const data = await new Promise<{ body: string; statusCode: number }>(
             (resolve) => {
                 setTimeout(() => {

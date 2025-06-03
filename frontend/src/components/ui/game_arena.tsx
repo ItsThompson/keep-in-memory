@@ -21,10 +21,17 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     useEffect(() => {
         const expiryTime = localStorage.getItem("expiryTime");
+        let expired: boolean = false;
         if (expiryTime) {
             const time = new Date(expiryTime);
-
             if (time < new Date()) {
+                // TODO: API CALL TO CHECK IF LOCK HAS EXPIRED
+                // - Get current game data
+                // - check if time < gameDateCreated + gameDuration
+                expired = true;
+            }
+
+            if (expired) {
                 setGameState(GameState.RECALL);
                 setUnlockTime(null);
                 localStorage.removeItem("expiryTime");
@@ -32,6 +39,10 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
                 setUnlockTime(time);
                 setGameState(GameState.LOCKED);
             }
+            // } else {
+            // TODO: API CALL TO CHECK IF GAME IS IN PROGRESS
+            // - get current game data
+            // - if that returns no game data, set gameState to NOT_STARTED
         }
     }, []);
 
@@ -66,20 +77,31 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     const onSubmitItems = (items: string[]) => {
         // TODO: API CALL TO ADD RECALL LIST TO GAMEDATA
         // - adds recall list to dynamodb row
-        setGameState(GameState.ENDED);
-        let recallResult: RecallResult[] = [];
-        for (const item of items) {
-            recallResult.push({
-                itemId: "1",
-                recalledItemName: item,
-                classification:
-                    Math.random() > 0.5
-                        ? ResultClassification.TRUE_POSITIVE
-                        : Math.random() > 0.5
-                          ? ResultClassification.FALSE_POSITIVE
-                          : ResultClassification.FALSE_NEGATIVE,
-            });
+        function mockOkResponse(): any {
+            return {
+                body: '{\"game_id\": \"1269ae1f-f032-4392-9ba9-a21020e26b9a\", \"recall_results\": [{\"name\": \"trash\", \"classification\": \"true_positive\"}, {\"name\": \"carseat\", \"classification\": \"true_positive\"}, {\"name\": \"pencil\", \"classification\": \"true_positive\"}, {\"name\": \"cablecar\", \"classification\": \"true_positive\"}, {\"name\": \"tennisball\", \"classification\": \"true_positive\"}, {\"name\": \"envelope\", \"classification\": \"true_positive\"}, {\"name\": \"flag\", \"classification\": \"true_positive\"}, {\"name\": \"trophy\", \"classification\": \"true_positive\"}, {\"name\": \"sailboat\", \"classification\": \"true_positive\"}, {\"name\": \"car\", \"classification\": \"true_positive\"}, {\"name\": \"bicycle\", \"classification\": \"false_positive\"}, {\"name\": \"bell\", \"classification\": \"false_positive\"}]}',
+                statusCode: 200,
+            };
         }
+        let recallResult: RecallResult[] = [];
+        const response = mockOkResponse();
+        if (response.statusCode !== 200) {
+            console.error("Failed to submit items:", response);
+            return [];
+        }
+        const data = JSON.parse(response.body);
+        if (!data.recall_results || !Array.isArray(data.recall_results)) {
+            console.error("Invalid recall results format:", data);
+            return [];
+        }
+        recallResult = data.recall_results.map((item: any) => ({
+            recalledItemName: item.name,
+            classification: item.classification as ResultClassification,
+        }));
+
+        console.table(recallResult);
+
+        setGameState(GameState.ENDED);
         return recallResult;
     };
 

@@ -32,7 +32,6 @@ export enum ResultClassification {
 }
 
 export interface RecallResult {
-    itemId: string;
     recalledItemName: string;
     classification: ResultClassification;
 }
