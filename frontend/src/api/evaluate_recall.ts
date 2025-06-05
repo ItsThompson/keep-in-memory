@@ -33,9 +33,11 @@ export const evaluateRecall = async (
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
-                recall_list: JSON.stringify(recallList),
             },
+            body: JSON.stringify({
+                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
+                recall_list: recallList,
+            }),
         },
     );
 
@@ -54,6 +56,6 @@ export const evaluateRecall = async (
         return false;
     }
 
-    console.log("Recall evaluation successful:", data.body);
+    console.log("Recall evaluation successful");
     return parseRecallResultJSON(data.body);
 };

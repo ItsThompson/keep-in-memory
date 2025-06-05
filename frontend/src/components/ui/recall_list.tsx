@@ -20,6 +20,7 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         // TODO: Any additional input validation
+        // TODO: Add a way to delete items from the list
         e.preventDefault();
         let text = itemText.trim();
         let itemSet = new Set(items);

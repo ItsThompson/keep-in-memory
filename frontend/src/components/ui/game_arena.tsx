@@ -35,7 +35,10 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
             );
         };
 
-        const isExpired = (expiry: Date, game: FullGameData | null): boolean => {
+        const isExpired = (
+            expiry: Date,
+            game: FullGameData | null,
+        ): boolean => {
             if (expiry >= new Date()) return false;
             if (!game) return true;
             return expiry >= getGameEndTime(game);
@@ -68,13 +71,16 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
             }
         } else if (currentGame) {
             const gameEndTime = getGameEndTime(currentGame);
-            localStorage.setItem("expiryTime", gameEndTime.toISOString());
-            handleLocked(gameEndTime);
+            if (isExpired(gameEndTime, currentGame)) {
+                handleExpired();
+            } else {
+                localStorage.setItem("expiryTime", gameEndTime.toISOString());
+                handleLocked(gameEndTime);
+            }
         } else {
             handleNotStarted();
         }
     }, [currentGame]);
-
 
     useEffect(() => {
         onGameStateChange(gameState);
