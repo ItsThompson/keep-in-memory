@@ -28,54 +28,53 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         };
         fetchCurrentGame();
     }, []);
-
     useEffect(() => {
-        const localStorageExpiryDate = localStorage.getItem("expiryTime");
-        if (localStorageExpiryDate) {
-            let expired: boolean = false;
+        const getGameEndTime = (game: FullGameData): Date => {
+            return new Date(
+                game.dateCreated.getTime() + game.gameDuration * 60 * 60 * 1000,
+            );
+        };
 
-            const expiryDate = new Date(localStorageExpiryDate);
-            if (expiryDate < new Date()) {
-                // Check if current game exists and its expiry date
-                if (currentGame) {
-                    const gameDuration = currentGame.gameDuration;
-                    const gameEndTime = new Date(
-                        currentGame.dateCreated.getTime() +
-                            gameDuration * 60 * 60 * 1000,
-                    );
-                    if (expiryDate < gameEndTime) {
-                        expired = false; // Not expired, within game duration
-                    } else {
-                        expired = true; // Expired, beyond game duration
-                    }
-                } else {
-                    expired = true; // No current game, so expired
-                }
-            }
-            if (expired) {
-                setGameState(GameState.RECALL);
-                setUnlockTime(null);
-                localStorage.removeItem("expiryTime");
+        const isExpired = (expiry: Date, game: FullGameData | null): boolean => {
+            if (expiry >= new Date()) return false;
+            if (!game) return true;
+            return expiry >= getGameEndTime(game);
+        };
+
+        const handleExpired = () => {
+            setGameState(GameState.RECALL);
+            setUnlockTime(null);
+            localStorage.removeItem("expiryTime");
+        };
+
+        const handleLocked = (unlockAt: Date) => {
+            setGameState(GameState.LOCKED);
+            setUnlockTime(unlockAt);
+        };
+
+        const handleNotStarted = () => {
+            setGameState(GameState.NOT_STARTED);
+            setUnlockTime(null);
+        };
+
+        const localStorageExpiry = localStorage.getItem("expiryTime");
+
+        if (localStorageExpiry) {
+            const expiryDate = new Date(localStorageExpiry);
+            if (isExpired(expiryDate, currentGame)) {
+                handleExpired();
             } else {
-                setUnlockTime(new Date(localStorageExpiryDate));
-                setGameState(GameState.LOCKED);
+                handleLocked(expiryDate);
             }
+        } else if (currentGame) {
+            const gameEndTime = getGameEndTime(currentGame);
+            localStorage.setItem("expiryTime", gameEndTime.toISOString());
+            handleLocked(gameEndTime);
         } else {
-            if (currentGame) {
-                const gameDuration = currentGame.gameDuration;
-                const gameEndTime = new Date(
-                    currentGame.dateCreated.getTime() +
-                        gameDuration * 60 * 60 * 1000,
-                );
-                setUnlockTime(gameEndTime);
-                setGameState(GameState.LOCKED);
-                localStorage.setItem("expiryTime", gameEndTime.toISOString());
-            } else {
-                setGameState(GameState.NOT_STARTED);
-                setUnlockTime(null);
-            }
+            handleNotStarted();
         }
     }, [currentGame]);
+
 
     useEffect(() => {
         onGameStateChange(gameState);
