@@ -32,17 +32,6 @@ export default function RemainingTime({ expiringTime }: RemainingTimeProps) {
                 <p>unlocks in</p>
                 <p>{text}</p>
             </div>
-            <button
-                className="bg-black text-white"
-                onClick={() => {
-                    // SKIPS LOCK
-                    const time = new Date(Date.now() - 24 * 60 * 60 * 1000);
-                    localStorage.setItem("expiryTime", time.toISOString());
-                    window.location.reload()
-                }}
-            >
-                DEV BUTTON
-            </button>
         </div>
     );
 }
