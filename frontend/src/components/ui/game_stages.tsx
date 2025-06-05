@@ -20,7 +20,7 @@ interface GameStagesProps {
     onTimerExpired: () => void;
     restartGame: () => void;
     onStartGame: () => void;
-    onSubmitItems: (items: string[]) => RecallResult[];
+    onSubmitItems: (items: string[]) => Promise<RecallResult[]>;
 }
 
 export default function GameStages({
@@ -76,8 +76,8 @@ export default function GameStages({
         [GameState.RECALL]: {
             gameBoard: (
                 <RecallList
-                    onSubmitItems={(items) => {
-                        setRecallResult(onSubmitItems(items));
+                    onSubmitItems={async (items) => {
+                        setRecallResult(await onSubmitItems(items));
                     }}
                 />
             ),

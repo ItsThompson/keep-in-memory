@@ -19,6 +19,18 @@ export interface GameData {
     items: [GameItem];
 }
 
+export interface FullGameData {
+    gameId: string;
+    playerId: string;
+    dateCreated: Date;
+    gameDuration: number;
+    currentGame: boolean;
+    gameMode: string;
+    gameType: string;
+    itemIds: string[];
+    recallResult?: RecallResult[];
+}
+
 export interface GameItem {
     id: string;
     objectUrl: string;

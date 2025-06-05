@@ -1,13 +1,11 @@
 "use client";
 
-import {
-    GameState,
-    RecallResult,
-    ResultClassification,
-} from "@/constants/interfaces";
+import { FullGameData, GameState } from "@/constants/interfaces";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
+import { getCurrentGame, removeCurrentGame } from "@/api/current_game";
+import { evaluateRecall } from "@/api/evaluate_recall";
 
 interface GameArenaProps {
     onGameStateChange: (gameState: GameState) => void;
@@ -19,32 +17,65 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     );
     const [unlockTime, setUnlockTime] = useState<Date | null>(null);
 
-    useEffect(() => {
-        const expiryTime = localStorage.getItem("expiryTime");
-        let expired: boolean = false;
-        if (expiryTime) {
-            const time = new Date(expiryTime);
-            if (time < new Date()) {
-                // TODO: API CALL TO CHECK IF LOCK HAS EXPIRED
-                // - Get current game data
-                // - check if time < gameDateCreated + gameDuration
-                expired = true;
-            }
+    const [currentGame, setCurrentGame] = useState<FullGameData | null>(null);
 
+    useEffect(() => {
+        const fetchCurrentGame = async () => {
+            const gameData = await getCurrentGame();
+            if (gameData) {
+                setCurrentGame(gameData);
+            }
+        };
+        fetchCurrentGame();
+    }, []);
+
+    useEffect(() => {
+        const localStorageExpiryDate = localStorage.getItem("expiryTime");
+        if (localStorageExpiryDate) {
+            let expired: boolean = false;
+
+            const expiryDate = new Date(localStorageExpiryDate);
+            if (expiryDate < new Date()) {
+                // Check if current game exists and its expiry date
+                if (currentGame) {
+                    const gameDuration = currentGame.gameDuration;
+                    const gameEndTime = new Date(
+                        currentGame.dateCreated.getTime() +
+                            gameDuration * 60 * 60 * 1000,
+                    );
+                    if (expiryDate < gameEndTime) {
+                        expired = false; // Not expired, within game duration
+                    } else {
+                        expired = true; // Expired, beyond game duration
+                    }
+                } else {
+                    expired = true; // No current game, so expired
+                }
+            }
             if (expired) {
                 setGameState(GameState.RECALL);
                 setUnlockTime(null);
                 localStorage.removeItem("expiryTime");
             } else {
-                setUnlockTime(time);
+                setUnlockTime(new Date(localStorageExpiryDate));
                 setGameState(GameState.LOCKED);
             }
-            // } else {
-            // TODO: API CALL TO CHECK IF GAME IS IN PROGRESS
-            // - get current game data
-            // - if that returns no game data, set gameState to NOT_STARTED
+        } else {
+            if (currentGame) {
+                const gameDuration = currentGame.gameDuration;
+                const gameEndTime = new Date(
+                    currentGame.dateCreated.getTime() +
+                        gameDuration * 60 * 60 * 1000,
+                );
+                setUnlockTime(gameEndTime);
+                setGameState(GameState.LOCKED);
+                localStorage.setItem("expiryTime", gameEndTime.toISOString());
+            } else {
+                setGameState(GameState.NOT_STARTED);
+                setUnlockTime(null);
+            }
         }
-    }, []);
+    }, [currentGame]);
 
     useEffect(() => {
         onGameStateChange(gameState);
@@ -59,12 +90,11 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         );
 
         setUnlockTime(time);
-        localStorage.setItem("expiryTime", time.toString());
+        localStorage.setItem("expiryTime", time.toISOString());
     };
 
-    const restartGame = () => {
-        // TODO: HERE ADD API CALL TO RESTART GAME (NEED TO IMPLEMENT LAMBDA)
-        //  - DELETE GAME DATA
+    const restartGame = async () => {
+        await removeCurrentGame();
         setGameState(GameState.NOT_STARTED);
         setUnlockTime(null);
         localStorage.removeItem("expiryTime");
@@ -74,30 +104,12 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         setGameState(GameState.IN_PROGRESS);
     };
 
-    const onSubmitItems = (items: string[]) => {
-        // TODO: API CALL TO ADD RECALL LIST TO GAMEDATA
-        // - adds recall list to dynamodb row
-        function mockOkResponse(): any {
-            return {
-                body: '{\"game_id\": \"1269ae1f-f032-4392-9ba9-a21020e26b9a\", \"recall_results\": [{\"name\": \"trash\", \"classification\": \"true_positive\"}, {\"name\": \"carseat\", \"classification\": \"true_positive\"}, {\"name\": \"pencil\", \"classification\": \"true_positive\"}, {\"name\": \"cablecar\", \"classification\": \"true_positive\"}, {\"name\": \"tennisball\", \"classification\": \"true_positive\"}, {\"name\": \"envelope\", \"classification\": \"true_positive\"}, {\"name\": \"flag\", \"classification\": \"true_positive\"}, {\"name\": \"trophy\", \"classification\": \"true_positive\"}, {\"name\": \"sailboat\", \"classification\": \"true_positive\"}, {\"name\": \"car\", \"classification\": \"true_positive\"}, {\"name\": \"bicycle\", \"classification\": \"false_positive\"}, {\"name\": \"bell\", \"classification\": \"false_positive\"}]}',
-                statusCode: 200,
-            };
-        }
-        let recallResult: RecallResult[] = [];
-        const response = mockOkResponse();
-        if (response.statusCode !== 200) {
-            console.error("Failed to submit items:", response);
+    const onSubmitItems = async (items: string[]) => {
+        const recallResult = await evaluateRecall(items);
+        if (!recallResult) {
+            console.error("Recall evaluation failed");
             return [];
         }
-        const data = JSON.parse(response.body);
-        if (!data.recall_results || !Array.isArray(data.recall_results)) {
-            console.error("Invalid recall results format:", data);
-            return [];
-        }
-        recallResult = data.recall_results.map((item: any) => ({
-            recalledItemName: item.name,
-            classification: item.classification as ResultClassification,
-        }));
 
         console.table(recallResult);
 

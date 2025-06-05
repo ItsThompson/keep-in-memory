@@ -37,7 +37,7 @@ export default function RemainingTime({ expiringTime }: RemainingTimeProps) {
                 onClick={() => {
                     // SKIPS LOCK
                     const time = new Date(Date.now() - 24 * 60 * 60 * 1000);
-                    localStorage.setItem("expiryTime", time.toString());
+                    localStorage.setItem("expiryTime", time.toISOString());
                     window.location.reload()
                 }}
             >
