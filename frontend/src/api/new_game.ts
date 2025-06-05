@@ -32,16 +32,19 @@ export const getNewGame = async (
     }
 
     const gameSettings = getGameSettings();
+    const params = new URLSearchParams({
+        player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
+        game_type: replaceSpacesWithUnderscores(gameSettings.gameMode),
+        number_of_items: "10",
+        game_duration: gameSettings.gameDuration.toString(), // in hours
+    });
+
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/new-game",
+        process.env.NEXT_PUBLIC_API_URL + `/new-game?${params.toString()}`,
         {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
-                game_type: replaceSpacesWithUnderscores(gameSettings.gameMode),
-                number_of_items: "10",
-                game_duration: gameSettings.gameDuration.toString(), // in hours,
                 // "x-api-key": process.env.REACT_APP_API_KEY || "",
             },
         },

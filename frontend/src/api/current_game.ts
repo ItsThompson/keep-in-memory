@@ -23,6 +23,9 @@ const parseFullGameDataJSON = (data: string): FullGameData => {
     }
 };
 
+const playerId = "5610d519-9f60-4746-a756-4bcbeb401b9d"
+// TODO: replace with actual player ID
+
 export const getCurrentGame = async (
     testMode: boolean = false,
 ): Promise<FullGameData | false> => {
@@ -37,12 +40,11 @@ export const getCurrentGame = async (
     }
 
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/get-current-game",
+        process.env.NEXT_PUBLIC_API_URL + `/get-current-game?player_id=${playerId}`,
         {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
             },
         },
     );
@@ -75,14 +77,12 @@ export const removeCurrentGame = async (
         console.log("Test mode: Current game removed");
         return true;
     }
-
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/delete-current-game",
+            process.env.NEXT_PUBLIC_API_URL + `/delete-current-game?player_id=${playerId}`,
         {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
             },
         },
     );
