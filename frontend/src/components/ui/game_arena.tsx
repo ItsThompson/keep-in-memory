@@ -21,6 +21,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     useEffect(() => {
         const fetchCurrentGame = async () => {
+            // TODO: Needs a loading state (There is not enough user feedback for when the game is loading)
             const gameData = await getCurrentGame();
             if (gameData) {
                 setCurrentGame(gameData);

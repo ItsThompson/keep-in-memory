@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import IconButton from "./icon_button";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import Description from "./description";
+import { addTokenToLocalStorage } from "@/api/token";
 
 interface TopbarProps {
     onSignIn: () => void;
@@ -19,6 +20,7 @@ export default function Topbar({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [retrievingToken, setRetrievingToken] = useState(false);
 
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const signInModalRef = useRef<HTMLDivElement | null>(null);
@@ -224,25 +226,58 @@ export default function Topbar({
                         </div>
 
                         <div className="flex flex-col items-center space-y-4 text-sm">
-                            <p>Welcome! Please sign in to continue.</p>
-                            <GoogleLogin
-                                onSuccess={(credentialResponse) => {
-                                    // const jwt = credentialResponse.credential;
-                                    // TODO: Send JWT to backend for verification and user session management
+                            {retrievingToken ? (
+                                <p className="text-primary">
+                                    Signing you in, please wait...
+                                </p>
+                            ) : (
+                                <>
+                                    <p>Welcome! Please sign in to continue.</p>
+                                    <GoogleLogin
+                                        onSuccess={async (
+                                            credentialResponse,
+                                        ) => {
+                                            const googleJWT =
+                                                credentialResponse.credential;
+                                            if (!googleJWT) {
+                                                console.error(
+                                                    "No JWT received",
+                                                );
+                                                return;
+                                            }
 
-                                    setIsSignInModalOpen(false);
+                                            setRetrievingToken(true);
 
-                                    onSignIn();
-                                }}
-                                onError={() => {}}
-                                auto_select={true}
-                            />
-                            <button
-                                className="text-sm text-primary hover:underline mt-5"
-                                onClick={() => setIsSignInModalOpen(false)}
-                            >
-                                Cancel
-                            </button>
+                                            let success =
+                                                await addTokenToLocalStorage(
+                                                    googleJWT,
+                                                );
+
+                                            setRetrievingToken(false);
+
+                                            if (!success) {
+                                                console.error(
+                                                    "Failed to add token to local storage",
+                                                );
+                                                return;
+                                            }
+
+                                            setIsSignInModalOpen(false);
+                                            onSignIn();
+                                        }}
+                                        onError={() => {}}
+                                        auto_select={true}
+                                    />
+                                    <button
+                                        className="text-sm text-primary hover:underline mt-5"
+                                        onClick={() =>
+                                            setIsSignInModalOpen(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

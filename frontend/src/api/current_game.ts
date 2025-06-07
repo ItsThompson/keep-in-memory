@@ -23,9 +23,6 @@ const parseFullGameDataJSON = (data: string): FullGameData => {
     }
 };
 
-const playerId = "5610d519-9f60-4746-a756-4bcbeb401b9d"
-// TODO: replace with actual player ID
-
 export const getCurrentGame = async (
     testMode: boolean = false,
 ): Promise<FullGameData | false> => {
@@ -40,11 +37,12 @@ export const getCurrentGame = async (
     }
 
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + `/get-current-game?player_id=${playerId}`,
+        process.env.NEXT_PUBLIC_API_URL + `/get-current-game`,
         {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         },
     );
@@ -67,6 +65,7 @@ export const getCurrentGame = async (
     }
 
     console.log("Current game data retrieved");
+    console.log(data);
     return parseFullGameDataJSON(data.body);
 };
 
@@ -78,11 +77,13 @@ export const removeCurrentGame = async (
         return true;
     }
     const response = await fetch(
-            process.env.NEXT_PUBLIC_API_URL + `/delete-current-game?player_id=${playerId}`,
+        process.env.NEXT_PUBLIC_API_URL +
+            `/delete-current-game`,
         {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         },
     );
@@ -105,5 +106,4 @@ export const removeCurrentGame = async (
 
     console.error("Unexpected response when removing current game:", data);
     return false;
-
 };

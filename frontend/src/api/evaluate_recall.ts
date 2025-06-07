@@ -33,9 +33,9 @@ export const evaluateRecall = async (
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify({
-                player_id: "5610d519-9f60-4746-a756-4bcbeb401b9d", // TODO: replace with actual player ID
                 recall_list: recallList,
             }),
         },
