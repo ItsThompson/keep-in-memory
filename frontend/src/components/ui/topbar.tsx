@@ -258,7 +258,7 @@ export default function Topbar({
                                             if (!success) {
                                                 console.error(
                                                     "Failed to add token to local storage",
-                                                );
+                                                    );
                                                 return;
                                             }
 

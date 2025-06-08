@@ -1,5 +1,3 @@
-"use client";
-
 import { FullGameData, GameState } from "@/constants/interfaces";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
@@ -18,14 +16,15 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     const [unlockTime, setUnlockTime] = useState<Date | null>(null);
 
     const [currentGame, setCurrentGame] = useState<FullGameData | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchCurrentGame = async () => {
-            // TODO: Needs a loading state (There is not enough user feedback for when the game is loading)
             const gameData = await getCurrentGame();
             if (gameData) {
                 setCurrentGame(gameData);
             }
+            setIsLoading(false);
         };
         fetchCurrentGame();
     }, []);
@@ -132,7 +131,13 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         onSubmitItems,
     });
 
-    return (
+    return isLoading ? (
+        <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
+            <div className="flex flex-col items-center justify-center h-full p-4">
+                <p>Loading data...</p>
+            </div>
+        </div>
+    ) : (
         <div className="flex flex-col items-center m-2 w-full h-full">
             {currentStage.aboveBoard}
             <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary">
