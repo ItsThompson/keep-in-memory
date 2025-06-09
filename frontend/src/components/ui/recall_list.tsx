@@ -5,8 +5,19 @@ interface RecallListProps {
     onSubmitItems: (items: string[]) => void;
 }
 
-const reducer = (state: string[], newItem: string) => {
-    return [...state, newItem];
+type Action =
+    | { type: "add"; payload: string }
+    | { type: "delete"; payload: number };
+
+const reducer = (state: string[], action: Action): string[] => {
+    switch (action.type) {
+        case "add":
+            return [...state, action.payload];
+        case "delete":
+            return state.filter((_, index) => index !== action.payload);
+        default:
+            return state;
+    }
 };
 
 export default function RecallList({ onSubmitItems }: RecallListProps) {
@@ -19,21 +30,24 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
     }, []);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        // TODO: Any additional input validation
-        // TODO: Add a way to delete items from the list
         e.preventDefault();
-        let text = itemText.trim();
-        let itemSet = new Set(items);
+        const text = itemText.trim();
+        const itemSet = new Set(items);
 
         if (!text || itemSet.has(text)) {
             // TODO; animation on input element (maybe like a shake or smth)
             return;
         }
 
-        dispatch(itemText);
+        dispatch({ type: "add", payload: text });
         setItemText("");
         inputRef.current?.focus();
     };
+
+    const handleDelete = (index: number) => {
+        dispatch({ type: "delete", payload: index });
+    };
+
     return (
         <div className="h-full flex flex-col justify-between">
             <div className="flex flex-col">
@@ -70,9 +84,21 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
                             {items.map((item, index) => (
                                 <li
                                     key={index}
-                                    className="p-2 rounded bg-white text-black"
+                                    className="p-2 rounded bg-white text-black flex justify-between items-center"
                                 >
-                                    {item}
+                                    <span className="flex-1">{item}</span>
+
+                                    <button
+                                        className="p-2 rounded-md hover:opacity-80"
+                                        onClick={() => handleDelete(index)}
+                                    >
+                                        <Image
+                                            src="/delete.svg"
+                                            alt="Delete Item Button"
+                                            width={32}
+                                            height={32}
+                                        />
+                                    </button>
                                 </li>
                             ))}
                         </ul>
