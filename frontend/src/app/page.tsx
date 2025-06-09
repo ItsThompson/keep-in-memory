@@ -47,7 +47,11 @@ export default function Home() {
                     <GameArena onGameStateChange={handleGameState} />
                 ) : (
                     <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
-                        <Description />
+                        <Description>
+                            <p className="text-primary text-lg text-center font-semibold max-w-2xl">
+                                Sign in to start playing the game!
+                            </p>
+                        </Description>
                     </div>
                 )}
                 {showGameOptions && <GameOptions />}
