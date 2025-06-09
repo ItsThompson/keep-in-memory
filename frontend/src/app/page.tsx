@@ -3,10 +3,11 @@
 import GameOptions from "@/components/ui/game_options";
 import Topbar from "@/components/ui/topbar";
 import GameArena from "@/components/ui/game_arena";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameState } from "@/constants/interfaces";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Description from "@/components/ui/description";
+import EndScreen from "@/components/ui/end_screen";
 
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
@@ -22,6 +23,14 @@ export default function Home() {
         setShowGameOptions(false);
         return;
     }
+
+    useEffect(() => {
+        // Check if the user is already signed in
+        const token = localStorage.getItem("token");
+        if (token) {
+            setSignedIn(true);
+        }
+    }, []);
 
     return (
         <GoogleOAuthProvider clientId={clientID}>

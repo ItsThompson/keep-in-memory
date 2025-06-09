@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./icon_button";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";

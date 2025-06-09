@@ -8,7 +8,6 @@ export const getCurrentGame = async (): Promise<GameData | false> => {
         {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         },
@@ -32,7 +31,6 @@ export const getCurrentGame = async (): Promise<GameData | false> => {
     }
 
     console.log("Current game data retrieved");
-    console.log(data);
     return parseGameDataJSON(data.body);
 };
 
@@ -42,7 +40,6 @@ export const removeCurrentGame = async (): Promise<boolean> => {
         {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         },

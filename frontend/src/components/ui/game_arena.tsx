@@ -1,4 +1,4 @@
-import { FullGameData, GameState } from "@/constants/interfaces";
+import { GameData, GameState } from "@/constants/interfaces";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
@@ -15,7 +15,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     );
     const [unlockTime, setUnlockTime] = useState<Date | null>(null);
 
-    const [currentGame, setCurrentGame] = useState<FullGameData | null>(null);
+    const [currentGame, setCurrentGame] = useState<GameData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -28,17 +28,15 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         };
         fetchCurrentGame();
     }, []);
+
     useEffect(() => {
-        const getGameEndTime = (game: FullGameData): Date => {
+        const getGameEndTime = (game: GameData): Date => {
             return new Date(
                 game.dateCreated.getTime() + game.gameDuration * 60 * 60 * 1000,
             );
         };
 
-        const isExpired = (
-            expiry: Date,
-            game: FullGameData | null,
-        ): boolean => {
+        const isExpired = (expiry: Date, game: GameData | null): boolean => {
             if (expiry >= new Date()) return false;
             if (!game) return true;
             return expiry >= getGameEndTime(game);
@@ -136,12 +134,26 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
             <p>Loading data...</p>
         </div>
     ) : (
-        <div className="flex flex-col items-center m-2 w-full h-full">
-            {currentStage.aboveBoard}
-            <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary">
-                {currentStage.gameBoard}
+        <>
+            <div className="flex flex-col items-center m-2 w-full h-full">
+                {currentStage.aboveBoard}
+                <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary">
+                    {currentStage.gameBoard}
+                </div>
+                {currentStage.belowBoard}
             </div>
-            {currentStage.belowBoard}
-        </div>
+            {gameState === GameState.ENDED && (
+                <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
+                    <button
+                        className="rounded-lg text-center inline-flex items-center font-bold text-secondary bg-primary py-4 px-8 hover:scale-110 transition ease-in-out delay-50 duration-150"
+                        onClick={() => {
+                            window.location.reload();
+                        }}
+                    >
+                        New Game
+                    </button>
+                </div>
+            )}
+        </>
     );
 }
