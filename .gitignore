@@ -24,3 +24,53 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Ignore frontend/.env
+frontend/.env
+
+# Ignore frontend/node_modules/
+frontend/node_modules/
+
+# Ignore frontend/.next/
+frontend/.next/
+
+# dependencies
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+frontend/!.yarn/patches
+frontend/!.yarn/plugins
+frontend/!.yarn/releases
+frontend/!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+frontend/.vercel
+
+# typescript
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts

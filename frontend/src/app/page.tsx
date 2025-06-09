@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { GameState } from "@/constants/interfaces";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Description from "@/components/ui/description";
-import EndScreen from "@/components/ui/end_screen";
 
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 

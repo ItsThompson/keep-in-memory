@@ -1,0 +1,79 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
+  <diagram name="Page-1" id="vMOOKbrLffhocyQHmbHu">
+    <mxGraphModel dx="901" dy="606" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="G3lojd10rjR7LdD3EvUh-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="40" y="200" width="120" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-2" value="Frontend" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-1">
+          <mxGeometry x="25" y="120" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-3" value="" style="group" vertex="1" connectable="0" parent="G3lojd10rjR7LdD3EvUh-1">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-4" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-3">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-5" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/laptop_client.svg;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-3">
+          <mxGeometry x="19.5" y="15" width="81" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-20" value="Authorized Route" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="346" y="130" width="158.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-21" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="360" y="200" width="120" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-15" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-21">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-14" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.api_gateway;fillColor=#D9A741;gradientColor=none;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-21">
+          <mxGeometry x="21.75" y="13.5" width="76.5" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-17" value="API Gateway&lt;div&gt;Authorizer&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-21">
+          <mxGeometry x="15" y="115" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-12" value="Request with custom JWT" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="G3lojd10rjR7LdD3EvUh-4" target="G3lojd10rjR7LdD3EvUh-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-22" value="&lt;font style=&quot;color: rgb(255, 102, 102);&quot;&gt;&lt;b&gt;Invalid JWT (403 Forbidden)&lt;/b&gt;&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="G3lojd10rjR7LdD3EvUh-15" target="G3lojd10rjR7LdD3EvUh-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-26" value="&lt;font style=&quot;color: rgb(102, 204, 0);&quot;&gt;&lt;b&gt;Valid JWT&lt;/b&gt;&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="G3lojd10rjR7LdD3EvUh-15" target="G3lojd10rjR7LdD3EvUh-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-28" value="Response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="G3lojd10rjR7LdD3EvUh-24" target="G3lojd10rjR7LdD3EvUh-4">
+          <mxGeometry x="-0.0009" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="290" />
+              <mxPoint x="580" y="380" />
+              <mxPoint x="260" y="380" />
+              <mxPoint x="260" y="290" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-29" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="680" y="200" width="120" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-25" value="" style="group" vertex="1" connectable="0" parent="G3lojd10rjR7LdD3EvUh-29">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-24" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-25">
+          <mxGeometry width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-23" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-25">
+          <mxGeometry x="21" y="21" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="G3lojd10rjR7LdD3EvUh-27" value="Requested Route" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="G3lojd10rjR7LdD3EvUh-29">
+          <mxGeometry y="125" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,62 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
+  <diagram name="Page-1" id="pjbwDSP3930dkrGp7ahd">
+    <mxGraphModel dx="871" dy="585" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SGgEeCRRiIgQfmo-b29U-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="119" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-4" value="&lt;font&gt;&lt;span style=&quot;text-align: start; text-wrap-mode: wrap; background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;s3:ObjectCreated:*&lt;/span&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="SGgEeCRRiIgQfmo-b29U-3" vertex="1" connectable="0">
+          <mxGeometry x="-0.0488" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-1" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#7AA116;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;" parent="1" vertex="1">
+          <mxGeometry x="40" y="80" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="SGgEeCRRiIgQfmo-b29U-5" target="SGgEeCRRiIgQfmo-b29U-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-5" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="40" width="360" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-6" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#ED7100;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;" parent="1" vertex="1">
+          <mxGeometry x="290" y="81" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-7" value="&lt;ol&gt;&lt;li&gt;Gets key of new item.&lt;/li&gt;&lt;li&gt;Adds one to &quot;item_counter&quot; from DynamoDB.&lt;/li&gt;&lt;li&gt;Puts new item in kim-item-table with unique increment ID, s3 object URL and name.&lt;/li&gt;&lt;/ol&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="380" y="50" width="250" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-8" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.dynamo_db;fillColor=#2E73B8;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="280" y="240" width="72" height="81" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-18" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="360" y="250.75" width="420" height="59" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-10" value="ID" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry width="40" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-13" value="object_url" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry x="40" width="200" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-14" value="names" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry x="240" width="180" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-15" value="X" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry y="29.5" width="40" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-16" value="&lt;p style=&quot;margin: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-size-adjust: none; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-variant-position: normal; font-variant-emoji: normal; font-stretch: normal; line-height: normal; text-align: start;&quot; class=&quot;p1&quot;&gt;&lt;font&gt;https://{}.s3.amazonaws.com/{}&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry x="40" y="29.5" width="200" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SGgEeCRRiIgQfmo-b29U-17" value="[filename_without_extension]" style="rounded=0;whiteSpace=wrap;html=1;" parent="SGgEeCRRiIgQfmo-b29U-18" vertex="1">
+          <mxGeometry x="240" y="29.5" width="180" height="29.5" as="geometry" />
+        </mxCell>
+        <mxCell id="mVMtNS7kfzPpBNTzk9qk-1" value="&lt;b&gt;kim-item-table&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="520" y="220.75" width="100" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
