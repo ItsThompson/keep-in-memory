@@ -22,7 +22,6 @@ export default function Topbar({
 
     const retrievingTokenRef = useRef<boolean>(false);
 
-
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const signInModalRef = useRef<HTMLDivElement | null>(null);
     const infoModalRef = useRef<HTMLDivElement | null>(null);
@@ -172,7 +171,6 @@ export default function Topbar({
                                         onClick={() => {
                                             googleLogout();
                                             onSignOut();
-                                            // TODO: Handle sign out logic
                                         }}
                                     >
                                         <img
@@ -254,7 +252,7 @@ export default function Topbar({
                                                 return;
                                             }
 
-                                            let success =
+                                            const success =
                                                 await addTokenToLocalStorage(
                                                     googleJWT,
                                                 );

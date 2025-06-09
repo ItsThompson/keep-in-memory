@@ -31,9 +31,9 @@ export const getNewGame = async (): Promise<GameData | false> => {
 
     if (data.statusCode == 409) {
         const body = JSON.parse(data.body);
-        let gameId = body["game_id"];
-        let gameDateCreated = body["date_created"];
-        let gameDuration = body["game_duration"]; // in hours
+        const gameId = body["game_id"];
+        const gameDateCreated = body["date_created"];
+        const gameDuration = body["game_duration"]; // in hours
         const time = new Date(
             Date.parse(gameDateCreated) + gameDuration * 60 * 60 * 1000,
         );

@@ -57,15 +57,23 @@ export function parseGameDataJSON(body: string): GameData {
             currentGame: parsedJson.current_game,
             gameMode: parsedJson.game_mode,
             gameType: parsedJson.game_type,
-            items: parsedJson.items.map((item: any) => ({
-                objectUrl: item.object_url,
-                id: item.ID,
-                names: item.names,
-            })),
-            recallResult: parsedJson.recall_results?.map((result: any) => ({
-                recalledItemName: result.name,
-                classification: result.classification as string,
-            })),
+            items: parsedJson.items.map(
+                (item: {
+                    object_url: string;
+                    ID: number;
+                    names: string[];
+                }) => ({
+                    objectUrl: item.object_url,
+                    id: item.ID,
+                    names: item.names,
+                }),
+            ),
+            recallResult: parsedJson.recall_results?.map(
+                (result: { name: string; classification: string }) => ({
+                    recalledItemName: result.name,
+                    classification: result.classification as string,
+                }),
+            ),
         };
     } catch (error) {
         console.error("Error parsing GameData JSON:", error);
@@ -76,10 +84,12 @@ export function parseGameDataJSON(body: string): GameData {
 export function parseRecallResultJSON(body: string): RecallResult[] {
     try {
         const parsedJson = JSON.parse(body);
-        return parsedJson.recall_results.map((result: any) => ({
-            recalledItemName: result.name,
-            classification: result.classification as string,
-        }));
+        return parsedJson.recall_results.map(
+            (result: { name: string; classification: string }) => ({
+                recalledItemName: result.name,
+                classification: result.classification as string,
+            }),
+        );
     } catch (error) {
         console.error("Error parsing RecallResult JSON:", error);
         throw new Error("Invalid RecallResult format");

@@ -35,7 +35,7 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
         const itemSet = new Set(items);
 
         if (!text || itemSet.has(text)) {
-            // TODO; animation on input element (maybe like a shake or smth)
+            // TODO: animation on input element (maybe like a shake or smth)
             return;
         }
 

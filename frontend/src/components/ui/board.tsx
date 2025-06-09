@@ -78,6 +78,7 @@ export default function Board({ gameData }: BoardProps) {
             className="relative w-full h-full overflow-hidden"
         >
             {positions.map((pos, index) => (
+            // Could potentially use next/image for optimization.
                 <img
                     key={index}
                     src={imageUrls[index]}
@@ -94,7 +95,6 @@ export default function Board({ gameData }: BoardProps) {
                         MozUserSelect: "none",
                         msUserSelect: "none",
                         pointerEvents: "none", // Prevent interaction
-
                     }}
                 />
             ))}

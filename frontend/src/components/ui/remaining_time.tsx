@@ -5,10 +5,10 @@ interface RemainingTimeProps {
 }
 
 export default function RemainingTime({ expiringTime }: RemainingTimeProps) {
-    let remainingTime = expiringTime.getTime() - Date.now();
-    let hours = Math.floor(remainingTime / (60 * 60 * 1000));
-    let minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / 60000);
-    let seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
+    const remainingTime = expiringTime.getTime() - Date.now();
+    const hours = Math.floor(remainingTime / (60 * 60 * 1000));
+    const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / 60000);
+    const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
 
     let text = "";
     if (hours > 0) {
