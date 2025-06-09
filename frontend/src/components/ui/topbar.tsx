@@ -22,6 +22,9 @@ export default function Topbar({
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [retrievingToken, setRetrievingToken] = useState(false);
 
+    const retrievingTokenRef = useRef<boolean>(false);
+
+
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const signInModalRef = useRef<HTMLDivElement | null>(null);
     const infoModalRef = useRef<HTMLDivElement | null>(null);
@@ -29,6 +32,10 @@ export default function Topbar({
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    useEffect(() => {
+        retrievingTokenRef.current = retrievingToken;
+    }, [retrievingToken]);
 
     // Close dropdown if clicked outside
     useEffect(() => {
@@ -51,7 +58,8 @@ export default function Topbar({
             if (
                 isSignInModalOpen &&
                 signInModalRef.current &&
-                !signInModalRef.current.contains(event.target as Node)
+                !signInModalRef.current.contains(event.target as Node) &&
+                !retrievingTokenRef.current
             ) {
                 setIsSignInModalOpen(false);
             }
@@ -237,6 +245,8 @@ export default function Topbar({
                                         onSuccess={async (
                                             credentialResponse,
                                         ) => {
+                                            setRetrievingToken(true);
+
                                             const googleJWT =
                                                 credentialResponse.credential;
                                             if (!googleJWT) {
@@ -245,8 +255,6 @@ export default function Topbar({
                                                 );
                                                 return;
                                             }
-
-                                            setRetrievingToken(true);
 
                                             let success =
                                                 await addTokenToLocalStorage(
@@ -258,7 +266,7 @@ export default function Topbar({
                                             if (!success) {
                                                 console.error(
                                                     "Failed to add token to local storage",
-                                                    );
+                                                );
                                                 return;
                                             }
 
