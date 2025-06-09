@@ -4,17 +4,7 @@ import { parseRecallResultJSON } from "@/lib/utils";
 
 export const evaluateRecall = async (
     recallList: string[],
-    testMode: boolean = false,
 ): Promise<RecallResult[] | false> => {
-    if (testMode) {
-        const data = {
-            body: '{\"game_id\": \"1269ae1f-f032-4392-9ba9-a21020e26b9a\", \"recall_results\": [{\"name\": \"trash\", \"classification\": \"true_positive\"}, {\"name\": \"carseat\", \"classification\": \"true_positive\"}, {\"name\": \"pencil\", \"classification\": \"true_positive\"}, {\"name\": \"cablecar\", \"classification\": \"true_positive\"}, {\"name\": \"tennisball\", \"classification\": \"true_positive\"}, {\"name\": \"envelope\", \"classification\": \"true_positive\"}, {\"name\": \"flag\", \"classification\": \"true_positive\"}, {\"name\": \"trophy\", \"classification\": \"true_positive\"}, {\"name\": \"sailboat\", \"classification\": \"true_positive\"}, {\"name\": \"car\", \"classification\": \"true_positive\"}, {\"name\": \"bicycle\", \"classification\": \"false_positive\"}, {\"name\": \"bell\", \"classification\": \"false_positive\"}]}',
-            statusCode: 200,
-        };
-
-        console.log("Recall evaluation successful");
-        return parseRecallResultJSON(data.body);
-    }
 
     const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + "/evaluate-recall",
