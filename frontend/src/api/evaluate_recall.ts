@@ -1,17 +1,6 @@
 import { RecallResult } from "@/constants/interfaces";
+import { parseRecallResultJSON } from "@/lib/utils";
 
-const parseRecallResultJSON = (data: string): RecallResult[] => {
-    try {
-        const parsedData = JSON.parse(data);
-        return parsedData.recall_results.map((result: any) => ({
-            recalledItemName: result.name,
-            classification: result.classification as string,
-        }));
-    } catch (error) {
-        console.error("Error parsing RecallResult JSON:", error);
-        throw new Error("Invalid RecallResult format");
-    }
-};
 
 export const evaluateRecall = async (
     recallList: string[],

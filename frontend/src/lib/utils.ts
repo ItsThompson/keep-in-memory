@@ -1,3 +1,4 @@
+import { GameData, RecallResult } from "@/constants/interfaces";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -43,4 +44,44 @@ export function getGameSettings(): {
 
 export function replaceSpacesWithUnderscores(str: string): string {
     return str.replace(/\s+/g, "_");
+}
+
+export function parseGameDataJSON(body: string): GameData {
+    try {
+        const parsedJson = JSON.parse(body);
+        return {
+            gameId: parsedJson.ID,
+            playerId: parsedJson.player_id,
+            dateCreated: new Date(Date.parse(parsedJson.date_created)),
+            gameDuration: parseInt(parsedJson.game_duration),
+            currentGame: parsedJson.current_game,
+            gameMode: parsedJson.game_mode,
+            gameType: parsedJson.game_type,
+            items: parsedJson.items.map((item: any) => ({
+                objectUrl: item.object_url,
+                id: item.ID,
+                names: item.names,
+            })),
+            recallResult: parsedJson.recall_results?.map((result: any) => ({
+                recalledItemName: result.name,
+                classification: result.classification as string,
+            })),
+        };
+    } catch (error) {
+        console.error("Error parsing GameData JSON:", error);
+        throw new Error("Invalid GameData format");
+    }
+}
+
+export function parseRecallResultJSON(body: string): RecallResult[] {
+    try {
+        const parsedJson = JSON.parse(body);
+        return parsedJson.recall_results.map((result: any) => ({
+            recalledItemName: result.name,
+            classification: result.classification as string,
+        }));
+    } catch (error) {
+        console.error("Error parsing RecallResult JSON:", error);
+        throw new Error("Invalid RecallResult format");
+    }
 }

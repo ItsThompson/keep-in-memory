@@ -14,12 +14,13 @@ export interface GameArenaComponents {
     belowBoard?: ReactElement;
 }
 
-export interface GameData {
-    gameId: string;
-    items: [GameItem];
+export interface GameItem {
+    id: string;
+    objectUrl: string;
+    names: string[];
 }
 
-export interface FullGameData {
+export interface GameData {
     gameId: string;
     playerId: string;
     dateCreated: Date;
@@ -27,14 +28,8 @@ export interface FullGameData {
     currentGame: boolean;
     gameMode: string;
     gameType: string;
-    itemIds: string[];
+    items: GameItem[];
     recallResult?: RecallResult[];
-}
-
-export interface GameItem {
-    id: string;
-    objectUrl: string;
-    names: string[];
 }
 
 export enum ResultClassification {

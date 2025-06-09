@@ -132,10 +132,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     });
 
     return isLoading ? (
-        <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
-            <div className="flex flex-col items-center justify-center h-full p-4">
-                <p>Loading data...</p>
-            </div>
+        <div className="h-full w-full sm:w-3/4 m-2 border-4 border-secondary rounded flex items-center justify-center">
+            <p>Loading data...</p>
         </div>
     ) : (
         <div className="flex flex-col items-center m-2 w-full h-full">

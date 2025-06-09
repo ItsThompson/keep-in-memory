@@ -35,7 +35,6 @@ export const addTokenToLocalStorage = async (
         return false;
     }
 
-
     localStorage.setItem("token", parsedData.token);
     return true;
 };
