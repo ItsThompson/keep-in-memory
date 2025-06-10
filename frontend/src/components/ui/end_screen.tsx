@@ -10,12 +10,13 @@ import Board from "./board";
 import { getCurrentGame } from "@/api/current_game";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
+import { googleLogout } from "@react-oauth/google";
 
 export default function EndScreen(
     recallResults: RecallResult[],
 ): GameArenaComponents {
     const defaultTabIndex = 0;
-    const { token } = useAuth();
+    const { token, setToken } = useAuth();
     const [tabIndex, setTabIndex] = useState(defaultTabIndex);
     const [gameData, setGameData] = useState<GameData | null>(null);
     const {
@@ -64,8 +65,11 @@ export default function EndScreen(
     }, [recallResults]);
 
     async function fetchCurrentGameData() {
-        const currentGameData: GameData | boolean | null = await getCurrentGame(token);
+        const currentGameData: GameData | boolean | null =
+            await getCurrentGame(token);
         if (currentGameData === null) {
+            googleLogout();
+            setToken(null);
             redirect("/sign-in");
         }
 

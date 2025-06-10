@@ -6,6 +6,7 @@ import { getCurrentGame, removeCurrentGame } from "@/api/current_game";
 import { evaluateRecall } from "@/api/evaluate_recall";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
+import { googleLogout } from "@react-oauth/google";
 
 interface GameArenaProps {
     onGameStateChange: (gameState: GameState) => void;
@@ -19,13 +20,15 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const [currentGame, setCurrentGame] = useState<GameData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const { token } = useAuth();
+    const { token, setToken } = useAuth();
 
     useEffect(() => {
         const fetchCurrentGame = async () => {
             const gameData: GameData | boolean | null =
                 await getCurrentGame(token);
             if (gameData === null) {
+                googleLogout();
+                setToken(null);
                 redirect("/sign-in");
             }
 
@@ -107,6 +110,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     const restartGame = async () => {
         const response: boolean | null = await removeCurrentGame(token);
         if (response === null) {
+            googleLogout();
+            setToken(null);
             redirect("/sign-in");
         }
         setGameState(GameState.NOT_STARTED);
@@ -122,6 +127,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         const recallResult: RecallResult[] | false | null =
             await evaluateRecall(items, token);
         if (recallResult === null) {
+            googleLogout();
+            setToken(null);
             redirect("/sign-in");
         }
 
