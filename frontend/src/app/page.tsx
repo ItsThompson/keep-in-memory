@@ -8,6 +8,7 @@ import { GameState } from "@/constants/interfaces";
 import Description from "@/components/ui/description";
 import { useAuth } from "@/components/authContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
     const [showGameOptions, setShowGameOptions] = useState(true);
@@ -37,6 +38,20 @@ export default function Home() {
                         >
                             Sign in to start playing the game!
                         </p>
+                        <div className="flex flex-row justify-center items-center space-x-4 mt-12">
+                            <Link
+                                className="text-sm text-white hover:underline"
+                                href="/privacy"
+                            >
+                                Privacy Policy
+                            </Link>
+                            <Link
+                                className="text-sm text-white hover:underline"
+                                href="/terms"
+                            >
+                                Terms of Service
+                            </Link>
+                        </div>
                     </Description>
                 </div>
             )}
