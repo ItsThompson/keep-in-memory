@@ -7,10 +7,12 @@ import { useState } from "react";
 import { GameState } from "@/constants/interfaces";
 import Description from "@/components/ui/description";
 import { useAuth } from "@/components/authContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [showGameOptions, setShowGameOptions] = useState(true);
     const { token } = useAuth();
+    const router = useRouter();
 
     function handleGameState(gameState: GameState) {
         if (gameState === GameState.NOT_STARTED) {
@@ -23,15 +25,16 @@ export default function Home() {
 
     return (
         <div className="w-screen h-screen flex flex-col items-center">
-            <Topbar
-                isSignedIn={!!token}
-            />
+            <Topbar isSignedIn={!!token} />
             {token ? (
                 <GameArena onGameStateChange={handleGameState} />
             ) : (
                 <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
                     <Description>
-                        <p className="text-primary text-lg text-center font-semibold max-w-2xl">
+                        <p
+                            className="text-primary text-lg text-center font-semibold max-w-2xl cursor-pointer hover:text-white hover:underline hover:scale-105 transition duration-50 ease-in-out"
+                            onClick={() => router.push("/sign-in")}
+                        >
                             Sign in to start playing the game!
                         </p>
                     </Description>
