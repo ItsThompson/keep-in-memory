@@ -3,6 +3,7 @@ import IconButton from "./icon_button";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import Description from "./description";
 import { addTokenToLocalStorage } from "@/api/token";
+import Link from "next/link";
 
 interface TopbarProps {
     onSignIn: () => void;
@@ -208,8 +209,22 @@ export default function Topbar({
 
                         <div className="flex flex-col items-center space-y-4 text-sm">
                             <Description includeHeading={false} />
+                            <div className="flex flex-row justify-center items-center space-x-4 mt-2">
+                                <Link
+                                    className="text-sm text-primary hover:underline"
+                                    href="/privacy"
+                                >
+                                    Privacy Policy
+                                </Link>
+                                <Link
+                                    className="text-sm text-primary hover:underline"
+                                    href="/terms"
+                                >
+                                    Terms of Service
+                                </Link>
+                            </div>
                             <button
-                                className="text-sm text-primary hover:underline mt-5"
+                                className="p-2 rounded-lg text-center hover:scale-110 hover:bg-primary hover:text-secondary transition ease-in-out delay-50 duration-150"
                                 onClick={() => setIsInfoModalOpen(false)}
                             >
                                 Close
@@ -272,6 +287,11 @@ export default function Topbar({
                                         onError={() => {}}
                                         auto_select={true}
                                     />
+                                    <p className="text-center mx-8">
+                                        By signing in, you agree to kim's
+                                        terms of service and privacy policy.
+                                    </p>
+
                                     <button
                                         className="text-sm text-primary hover:underline mt-5"
                                         onClick={() =>
