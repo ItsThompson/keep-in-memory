@@ -1,9 +1,9 @@
-export const addTokenToLocalStorage = async (
-    token: string,
-): Promise<boolean> => {
-    if (!token) {
+export const getTokenWithGoogle = async (
+    googleToken: string,
+): Promise<string | null> => {
+    if (!googleToken) {
         console.error("No token provided");
-        return false;
+        return null;
     }
 
     const response = await fetch(
@@ -12,29 +12,27 @@ export const addTokenToLocalStorage = async (
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ token: token }),
+            body: JSON.stringify({ token: googleToken }),
         },
     );
 
     if (!response.ok) {
         console.error("Failed to get token:", response.statusText);
-        return false;
+        return null;
     }
 
     const data = await response.json();
     if (data.statusCode !== 200) {
         console.error("Error retrieving token:", data);
-        return false;
+        return null;
     }
 
     const parsedData = JSON.parse(data.body);
     if (!parsedData.token) {
         console.error("Token not found in response data");
-        return false;
+        return null;
     }
 
-    localStorage.setItem("token", parsedData.token);
-    return true;
+    return parsedData.token;
 };

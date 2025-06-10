@@ -1,8 +1,14 @@
 import { GameData } from "@/constants/interfaces";
 import { parseGameDataJSON } from "@/lib/utils";
 
+export const getCurrentGame = async (
+    token: string | null,
+): Promise<GameData | null | false> => {
+    if (!token) {
+        console.warn("No token found, redirecting to sign-in page.");
+        return null;
+    }
 
-export const getCurrentGame = async (): Promise<GameData | false> => {
     const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + `/get-current-game`,
         {
@@ -12,6 +18,11 @@ export const getCurrentGame = async (): Promise<GameData | false> => {
             },
         },
     );
+
+    if (response.status === 403) {
+        console.warn("Token expired or invalid, redirecting to sign-in.");
+        return null;
+    }
 
     const data = await response.json();
 
@@ -34,7 +45,15 @@ export const getCurrentGame = async (): Promise<GameData | false> => {
     return parseGameDataJSON(data.body);
 };
 
-export const removeCurrentGame = async (): Promise<boolean> => {
+export const removeCurrentGame = async (
+    token: string | null,
+): Promise<boolean | null> => {
+
+    if (!token) {
+        console.warn("No token found, redirecting to sign-in page.");
+        return null;
+    }
+
     const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + `/delete-current-game`,
         {
@@ -44,6 +63,12 @@ export const removeCurrentGame = async (): Promise<boolean> => {
             },
         },
     );
+
+    if (response.status === 403) {
+        console.warn("Token expired or invalid, redirecting to sign-in.");
+        return null;
+    }
+
     const data = await response.json();
 
     if (!response.ok) {

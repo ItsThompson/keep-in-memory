@@ -8,11 +8,14 @@ import ArenaTabs from "./arena_tabs";
 import { useEffect, useMemo, useState } from "react";
 import Board from "./board";
 import { getCurrentGame } from "@/api/current_game";
+import { useAuth } from "../authContext";
+import { redirect } from "next/navigation";
 
 export default function EndScreen(
     recallResults: RecallResult[],
 ): GameArenaComponents {
     const defaultTabIndex = 0;
+    const { token } = useAuth();
     const [tabIndex, setTabIndex] = useState(defaultTabIndex);
     const [gameData, setGameData] = useState<GameData | null>(null);
     const {
@@ -61,9 +64,12 @@ export default function EndScreen(
     }, [recallResults]);
 
     async function fetchCurrentGameData() {
-        const currentGameData: GameData | boolean = await getCurrentGame();
+        const currentGameData: GameData | boolean | null = await getCurrentGame(token);
+        if (currentGameData === null) {
+            redirect("/sign-in");
+        }
 
-        if (!currentGameData) {
+        if (currentGameData === false) {
             return;
         }
         setGameData(currentGameData);

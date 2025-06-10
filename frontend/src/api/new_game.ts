@@ -1,7 +1,18 @@
 import { GameData } from "@/constants/interfaces";
-import { getGameSettings, parseGameDataJSON, replaceSpacesWithUnderscores } from "@/lib/utils";
+import {
+    getGameSettings,
+    parseGameDataJSON,
+    replaceSpacesWithUnderscores,
+} from "@/lib/utils";
 
-export const getNewGame = async (): Promise<GameData | false> => {
+export const getNewGame = async (
+    token: string | null,
+): Promise<GameData | false | null> => {
+    if (!token) {
+        console.warn("No token found, redirecting to sign-in page.");
+        return null;
+    }
+
     const gameSettings = getGameSettings();
     const params = new URLSearchParams({
         game_type: replaceSpacesWithUnderscores(gameSettings.gameMode),
@@ -14,10 +25,16 @@ export const getNewGame = async (): Promise<GameData | false> => {
         {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             },
         },
     );
+
+    if (response.status === 403) {
+        console.warn("Token expired or invalid, redirecting to sign-in.");
+        return null;
+    }
+
     const data = await response.json();
     if (!response.ok) {
         console.error("Failed to start game:", data);

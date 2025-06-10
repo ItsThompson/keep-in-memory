@@ -5,14 +5,13 @@ import Topbar from "@/components/ui/topbar";
 import GameArena from "@/components/ui/game_arena";
 import { useEffect, useState } from "react";
 import { GameState } from "@/constants/interfaces";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Description from "@/components/ui/description";
-
-const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+import { useAuth } from "@/components/authContext";
 
 export default function Home() {
     const [showGameOptions, setShowGameOptions] = useState(true);
     const [signedIn, setSignedIn] = useState(false);
+    const { token } = useAuth();
 
     function handleGameState(gameState: GameState) {
         if (gameState === GameState.NOT_STARTED) {
@@ -24,38 +23,35 @@ export default function Home() {
     }
 
     useEffect(() => {
-        // Check if the user is already signed in
-        const token = localStorage.getItem("token");
+        // Checks if the user is already signed in
         if (token) {
             setSignedIn(true);
         }
     }, []);
 
     return (
-        <GoogleOAuthProvider clientId={clientID}>
-            <div className="w-screen h-screen flex flex-col items-center">
-                <Topbar
-                    onSignIn={async () => {
-                        setSignedIn(true);
-                    }}
-                    onSignOut={() => {
-                        setSignedIn(false);
-                    }}
-                    isSignedIn={signedIn}
-                />
-                {signedIn ? (
-                    <GameArena onGameStateChange={handleGameState} />
-                ) : (
-                    <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
-                        <Description>
-                            <p className="text-primary text-lg text-center font-semibold max-w-2xl">
-                                Sign in to start playing the game!
-                            </p>
-                        </Description>
-                    </div>
-                )}
-                {showGameOptions && <GameOptions />}
-            </div>
-        </GoogleOAuthProvider>
+        <div className="w-screen h-screen flex flex-col items-center">
+            <Topbar
+                onSignIn={async () => {
+                    setSignedIn(true);
+                }}
+                onSignOut={() => {
+                    setSignedIn(false);
+                }}
+                isSignedIn={signedIn}
+            />
+            {signedIn ? (
+                <GameArena onGameStateChange={handleGameState} />
+            ) : (
+                <div className="h-full w-full sm:w-3/4 border-4 rounded border-secondary m-2">
+                    <Description>
+                        <p className="text-primary text-lg text-center font-semibold max-w-2xl">
+                            Sign in to start playing the game!
+                        </p>
+                    </Description>
+                </div>
+            )}
+            {showGameOptions && <GameOptions />}
+        </div>
     );
 }

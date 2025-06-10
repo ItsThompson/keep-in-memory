@@ -1,10 +1,14 @@
 import { RecallResult } from "@/constants/interfaces";
 import { parseRecallResultJSON } from "@/lib/utils";
 
-
 export const evaluateRecall = async (
     recallList: string[],
-): Promise<RecallResult[] | false> => {
+    token: string | null,
+): Promise<RecallResult[] | false | null> => {
+    if (!token) {
+        console.warn("No token found, redirecting to sign-in page.");
+        return null;
+    }
 
     const response = await fetch(
         process.env.NEXT_PUBLIC_API_URL + "/evaluate-recall",
@@ -19,6 +23,12 @@ export const evaluateRecall = async (
             }),
         },
     );
+
+    if (response.status === 403) {
+        console.warn("Token expired or invalid, redirecting to sign-in.");
+        return null;
+    }
+
 
     const data = await response.json();
     if (!response.ok) {

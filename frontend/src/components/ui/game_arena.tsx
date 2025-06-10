@@ -1,9 +1,11 @@
-import { GameData, GameState } from "@/constants/interfaces";
+import { GameData, GameState, RecallResult } from "@/constants/interfaces";
 import { useEffect, useState } from "react";
 import GameStages from "./game_stages";
 import { getGameSettings } from "@/lib/utils";
 import { getCurrentGame, removeCurrentGame } from "@/api/current_game";
 import { evaluateRecall } from "@/api/evaluate_recall";
+import { useAuth } from "../authContext";
+import { redirect } from "next/navigation";
 
 interface GameArenaProps {
     onGameStateChange: (gameState: GameState) => void;
@@ -17,10 +19,16 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const [currentGame, setCurrentGame] = useState<GameData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchCurrentGame = async () => {
-            const gameData = await getCurrentGame();
+            const gameData: GameData | boolean | null =
+                await getCurrentGame(token);
+            if (gameData === null) {
+                redirect("/sign-in");
+            }
+
             if (gameData) {
                 setCurrentGame(gameData);
             }
@@ -97,7 +105,10 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     };
 
     const restartGame = async () => {
-        await removeCurrentGame();
+        const response: boolean | null = await removeCurrentGame(token);
+        if (response === null) {
+            redirect("/sign-in");
+        }
         setGameState(GameState.NOT_STARTED);
         setUnlockTime(null);
         localStorage.removeItem("expiryTime");
@@ -108,7 +119,12 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     };
 
     const onSubmitItems = async (items: string[]) => {
-        const recallResult = await evaluateRecall(items);
+        const recallResult: RecallResult[] | false | null =
+            await evaluateRecall(items, token);
+        if (recallResult === null) {
+            redirect("/sign-in");
+        }
+
         if (!recallResult) {
             console.error("Recall evaluation failed");
             return [];
