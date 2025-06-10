@@ -18,6 +18,7 @@ interface GameStagesProps {
     gameState: GameState;
     unlockTime: Date | null;
     onTimerExpired: () => void;
+    onUnlock: () => void;
     restartGame: () => void;
     onStartGame: () => void;
     onSubmitItems: (items: string[]) => Promise<RecallResult[]>;
@@ -27,6 +28,7 @@ export default function GameStages({
     gameState,
     unlockTime,
     onTimerExpired,
+    onUnlock,
     restartGame,
     onStartGame,
     onSubmitItems,
@@ -56,7 +58,12 @@ export default function GameStages({
         [GameState.LOCKED]: {
             gameBoard: (
                 <div className="h-full flex justify-center items-center">
-                    {unlockTime && <RemainingTime expiringTime={unlockTime} />}
+                    {unlockTime && (
+                        <RemainingTime
+                            expiringTime={unlockTime}
+                            onTimeExpired={onUnlock}
+                        />
+                    )}
                 </div>
             ),
             belowBoard: (

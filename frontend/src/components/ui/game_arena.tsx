@@ -20,6 +20,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const [currentGame, setCurrentGame] = useState<GameData | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [expiryCheckTrigger, setExpiryCheckTrigger] = useState(0);
     const { token, setToken } = useAuth();
 
     useEffect(() => {
@@ -27,6 +28,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
             const gameData: GameData | boolean | null =
                 await getCurrentGame(token);
             if (gameData === null) {
+                // TODO: get access token POST /refresh with refresh cookie
                 googleLogout();
                 setToken(null);
                 redirect("/sign-in");
@@ -74,8 +76,10 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         if (localStorageExpiry) {
             const expiryDate = new Date(localStorageExpiry);
             if (isExpired(expiryDate, currentGame)) {
+                console.log("Game expired, redirecting to recall stage");
                 handleExpired();
             } else {
+                console.log("Game is locked, setting unlock time");
                 handleLocked(expiryDate);
             }
         } else if (currentGame) {
@@ -89,7 +93,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         } else {
             handleNotStarted();
         }
-    }, [currentGame]);
+    }, [currentGame, expiryCheckTrigger]);
 
     useEffect(() => {
         onGameStateChange(gameState);
@@ -107,9 +111,15 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         localStorage.setItem("expiryTime", time.toISOString());
     };
 
+    const onUnlock = () => {
+        console.log("expired from UI");
+        setExpiryCheckTrigger((prev) => prev + 1);
+    };
+
     const restartGame = async () => {
         const response: boolean | null = await removeCurrentGame(token);
         if (response === null) {
+            // TODO: get access token POST /refresh with refresh cookie
             googleLogout();
             setToken(null);
             redirect("/sign-in");
@@ -127,6 +137,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         const recallResult: RecallResult[] | false | null =
             await evaluateRecall(items, token);
         if (recallResult === null) {
+            // TODO: get access token POST /refresh with refresh cookie
             googleLogout();
             setToken(null);
             redirect("/sign-in");
@@ -147,6 +158,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         gameState,
         unlockTime,
         onTimerExpired,
+        onUnlock,
         restartGame,
         onStartGame,
         onSubmitItems,

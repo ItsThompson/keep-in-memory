@@ -68,6 +68,7 @@ export default function EndScreen(
         const currentGameData: GameData | boolean | null =
             await getCurrentGame(token);
         if (currentGameData === null) {
+            // TODO: get access token POST /refresh with refresh cookie
             googleLogout();
             setToken(null);
             redirect("/sign-in");

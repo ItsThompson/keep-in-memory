@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     title: "kim: keep in memory",
     description:
         "Challenges your short-term memory through observation and recall.",
+    other: {
+        "google-site-verification":
+            "W5dYLv98gIPoVGMKVo2snWTG5ng42GRdST-wX0Zw6HA",
+    },
 };
 
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";

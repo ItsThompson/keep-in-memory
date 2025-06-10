@@ -29,6 +29,7 @@ export default function StartGameButton({
                     const data: GameData | false | null =
                         await getNewGame(token);
                     if (data === null) {
+                        // TODO: get access token POST /refresh with refresh cookie
                         googleLogout();
                         setToken(null);
                         redirect("/sign-in");

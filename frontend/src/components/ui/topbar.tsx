@@ -141,6 +141,7 @@ export default function Topbar({
                                         onClick={() => {
                                             googleLogout();
                                             setToken(null);
+                                            // TODO: delete refresh cookie
                                         }}
                                     >
                                         <img
