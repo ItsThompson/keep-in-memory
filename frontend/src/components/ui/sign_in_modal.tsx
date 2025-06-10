@@ -6,13 +6,11 @@ import { useAuth } from "../authContext";
 interface SignInModalProps {
     open: boolean;
     onClose: () => void;
-    onSignIn: () => void;
 }
 
 export default function SignInModal({
     open,
     onClose,
-    onSignIn,
 }: SignInModalProps) {
     const [retrievingToken, setRetrievingToken] = useState(false);
     const retrievingTokenRef = useRef<boolean>(false);
@@ -89,7 +87,6 @@ export default function SignInModal({
 
                                     setToken(token);
                                     onClose();
-                                    onSignIn();
                                 }}
                                 onError={() => {
                                     console.error(

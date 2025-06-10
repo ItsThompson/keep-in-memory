@@ -7,14 +7,10 @@ import { useAuth } from "../authContext";
 import SignInModal from "./sign_in_modal";
 
 interface TopbarProps {
-    onSignIn: () => void;
-    onSignOut: () => void;
     isSignedIn: boolean;
 }
 
 export default function Topbar({
-    onSignIn,
-    onSignOut,
     isSignedIn = false,
 }: TopbarProps) {
     const { setToken } = useAuth();
@@ -144,7 +140,6 @@ export default function Topbar({
                                         className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
                                         onClick={() => {
                                             googleLogout();
-                                            onSignOut();
                                             setToken(null);
                                         }}
                                     >
@@ -211,7 +206,6 @@ export default function Topbar({
             <SignInModal
                 open={isSignInModalOpen}
                 onClose={() => setIsSignInModalOpen(false)}
-                onSignIn={onSignIn}
             />
         </>
     );
