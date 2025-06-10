@@ -288,7 +288,7 @@ export default function Topbar({
                                         auto_select={true}
                                     />
                                     <p className="text-center mx-8">
-                                        By signing in, you agree to kim's
+                                        By signing in, you agree to kim&apos;s
                                         terms of service and privacy policy.
                                     </p>
 

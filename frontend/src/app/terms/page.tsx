@@ -35,7 +35,7 @@ export default function TermsPage() {
                 Limitations
             </h2>
             <p className="mb-4">
-                You are responsible for your account's security and all
+                You are responsible for your account&apos;s security and all
                 activities on your account. You must not, in the use of this
                 site, violate any applicable laws, including, without
                 limitation, copyright laws, or any other laws regarding the
@@ -68,7 +68,7 @@ export default function TermsPage() {
                     graphic or gratuitous violence;
                 </li>
                 <li>
-                    violates any person's right to privacy or publicity, or
+                    violates any person&apos;s right to privacy or publicity, or
                     otherwise solicits, collects, or publishes data, including
                     personal information and login information, about other
                     Users without consent or for unlawful purposes in violation
@@ -110,13 +110,14 @@ export default function TermsPage() {
                 <li>
                     {" "}
                     falsely impersonate any person or entity, including any of
-                    our contributors, misrepresent your identity or the site's
-                    purpose, or falsely associate yourself with kim;
+                    our contributors, misrepresent your identity or the
+                    site&apos;s purpose, or falsely associate yourself with kim;
                 </li>
                 <li>
                     {" "}
                     violate the privacy of any third party, such as by posting
-                    another person's personal information without their consent;{" "}
+                    another person&apos;s personal information without their
+                    consent;{" "}
                 </li>
                 <li>
                     {" "}
@@ -155,22 +156,23 @@ export default function TermsPage() {
                 your information. If you do not agree with our Privacy
                 Statement, then you must stop using the Services immediately.
                 Any person, entity, or service collecting data from the Services
-                must comply with our Privacy Statement. Misuse of any User's
-                Personal Information is prohibited. If you collect any Personal
-                Information from a User, you agree that you will only use the
-                Personal Information you gather for the purpose for which the
-                User has authorized it. You agree that you will reasonably
-                secure any Personal Information you have gathered from the
-                Services, and you will respond promptly to complaints, removal
-                requests, and 'do not contact' requests from us or Users.
+                must comply with our Privacy Statement. Misuse of any
+                User&apos;s Personal Information is prohibited. If you collect
+                any Personal Information from a User, you agree that you will
+                only use the Personal Information you gather for the purpose for
+                which the User has authorized it. You agree that you will
+                reasonably secure any Personal Information you have gathered
+                from the Services, and you will respond promptly to complaints,
+                removal requests, and &apos;do not contact&apos; requests from
+                us or Users.
             </p>
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-primary">
                 Limitations on Automated Use
             </h2>
             <p className="mb-4">
-                You shouldn't use bots or access our Services in malicious or
-                prohibited ways. While accessing or using the Services, you may
-                not:
+                You shouldn&apos;t use bots or access our Services in malicious
+                or prohibited ways. While accessing or using the Services, you
+                may not:
             </p>
             <ol className="list-disc list-inside mb-6 space-y-1">
                 <li>use bots, hacks, or cheats while using our site;</li>
@@ -191,7 +193,7 @@ export default function TermsPage() {
                     by kim (and only pursuant to those terms and conditions),
                     unless you have been specifically allowed to do so in a
                     separate agreement with kim, Inc., or unless specifically
-                    permitted by kim, Inc.'s robots.txt file or other robot
+                    permitted by kim, Inc.&apos;s robots.txt file or other robot
                     exclusion mechanisms;
                 </li>
                 <li>
@@ -252,17 +254,17 @@ export default function TermsPage() {
                 Disclaimer
             </h2>
             <p className="mb-4">
-                The Services are provided on an "as is" and "as available"
-                basis. kim makes no warranties or representations about the
-                accuracy, reliability, completeness, or timeliness of the
-                Services or any content provided through the Services. To the
-                fullest extent permitted by applicable law, kim disclaims all
-                warranties, express or implied, including, but not limited to,
-                implied warranties of merchantability, fitness for a particular
-                purpose, and non-infringement. You acknowledge that your use of
-                the Services is at your own risk, and you are solely responsible
-                for any damage to your computer system or loss of data that
-                results from such use.
+                The Services are provided on an &quot;as is&quot; and &quot;as
+                available&quot; basis. kim makes no warranties or
+                representations about the accuracy, reliability, completeness,
+                or timeliness of the Services or any content provided through
+                the Services. To the fullest extent permitted by applicable law,
+                kim disclaims all warranties, express or implied, including, but
+                not limited to, implied warranties of merchantability, fitness
+                for a particular purpose, and non-infringement. You acknowledge
+                that your use of the Services is at your own risk, and you are
+                solely responsible for any damage to your computer system or
+                loss of data that results from such use.
             </p>
             <h2 className="text-2xl font-semibold mt-10 mb-4 text-primary">
                 How to contact us

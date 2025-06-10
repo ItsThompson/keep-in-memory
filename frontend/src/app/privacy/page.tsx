@@ -20,7 +20,7 @@ export default function PrivacyPage() {
             </h1>
 
             <p className="mb-4">
-                Thanks for trusting kim ('kim', 'we', 'us', 'our') with your
+                Thanks for trusting kim (&apos;kim&apos;, &apos;we&apos;, &apos;us&apos;, &apos;our&apos;) with your
                 personal information! We take our responsibility to you very
                 seriously, and so this Privacy Statement describes how we handle
                 your data.
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             <p className="mb-4">
                 This Privacy Statement applies to all websites we own and
                 operate and to all services we provide (collectively, the
-                'Services'). By using the Services, you are expressly and
+                &apos;Services&apos;). By using the Services, you are expressly and
                 voluntarily accepting the terms and conditions of this Privacy
                 Statement and our Terms of Service, which include allowing us to
                 process information about you.
