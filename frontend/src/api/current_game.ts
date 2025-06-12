@@ -14,7 +14,7 @@ export const getCurrentGame = async (
         {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             },
         },
     );
@@ -59,7 +59,7 @@ export const removeCurrentGame = async (
         {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             },
         },
     );

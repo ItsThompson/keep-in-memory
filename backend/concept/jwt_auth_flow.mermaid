@@ -1,0 +1,48 @@
+sequenceDiagram
+    participant U as User/Browser
+    participant F as Frontend (React)
+    participant B as Backend API
+    participant DB as Database
+
+    Note over U,DB: 🔐 LOGIN FLOW
+    U->>F: Enter credentials
+    F->>B: POST /login (username, password)
+    B->>DB: Validate credentials
+    B-->>B: Generate JWT Access Token<br/>(player_id, short expiry: 5-15min)
+    B-->>B: Generate Refresh Token<br/>(long expiry: 7-30 days)
+    B->>DB: Store/Update Refresh Token<br/>for user in database
+    B->>F: Response:<br/>• JSON: {"accessToken": "eyJ..."}<br/>• HttpOnly Cookie: refresh_token
+    F-->>F: Store Access Token<br/>in React Context/Memory
+    
+    Note over U,DB: 🔄 APP RELOAD/REFRESH FLOW
+    U->>F: Page refresh/reload
+    F-->>F: Access token lost<br/>(was in memory)
+    F->>B: POST /refresh<br/>(refresh cookie auto-sent)
+    B->>DB: Validate refresh token<br/>against stored token
+    B-->>B: Generate new Access Token<br/>(player_id, fresh expiry)
+    B->>F: {"accessToken": "eyJ..."}
+    F-->>F: Store new Access Token<br/>in React Context
+
+    Note over U,DB: 🛡️ PROTECTED API CALLS
+    F->>B: API Request<br/>Authorization: Bearer <access_token>
+    B-->>B: Validate JWT<br/>Extract player_id
+    B->>DB: Query with player_id
+    DB->>B: Data response
+    B->>F: Protected data
+
+    Note over U,DB: ⏰ TOKEN EXPIRY HANDLING
+    F->>B: API Request<br/>Authorization: Bearer <expired_token>
+    B->>F: 401 Unauthorized
+    F->>B: POST /refresh<br/>(refresh cookie auto-sent)
+    B->>F: {"accessToken": "eyJ..."}
+    F-->>F: Update context with<br/>new access token
+    F->>B: Retry original request<br/>with new token
+    B->>F: Success response
+
+    Note over U,DB: 🚪 LOGOUT FLOW
+    U->>F: Click logout
+    F-->>F: Clear access token<br/>from context
+    F->>B: POST /logout
+    B->>DB: Remove/invalidate<br/>refresh token from database
+    B-->>B: Clear refresh token cookie
+    B->>F: Logout success
