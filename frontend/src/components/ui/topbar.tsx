@@ -14,7 +14,7 @@ interface TopbarProps {
 export default function Topbar({
     isSignedIn = false,
 }: TopbarProps) {
-    const { token, setToken } = useAuth();
+    const { setToken } = useAuth();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
