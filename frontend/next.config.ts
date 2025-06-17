@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
                 {
                     source: "/api/:path*",
                     destination:
-                        "https://yvhgqsmtn8.execute-api.eu-west-2.amazonaws.com/prod/:path*", // your real API endpoint
+                        "https://yvhgqsmtn8.execute-api.eu-west-2.amazonaws.com/dev/:path*", // your real API endpoint
                 },
             ];
         }

@@ -19,7 +19,7 @@ export const getCurrentGame = async (
         },
     );
 
-    if (response.status === 403) {
+    if (response.status === 403 || response.status === 401) {
         console.warn("Token expired or invalid, redirecting to sign-in.");
         return null;
     }
@@ -63,7 +63,7 @@ export const removeCurrentGame = async (
         },
     );
 
-    if (response.status === 403) {
+    if (response.status === 403 || response.status === 401) {
         console.warn("Token expired or invalid, redirecting to sign-in.");
         return null;
     }

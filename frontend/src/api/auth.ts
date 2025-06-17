@@ -10,6 +10,7 @@ export const getTokenWithGoogle = async (
         process.env.NEXT_PUBLIC_API_URL + "/issue-token",
         {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
