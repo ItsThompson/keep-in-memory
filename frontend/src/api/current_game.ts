@@ -48,7 +48,6 @@ export const getCurrentGame = async (
 export const removeCurrentGame = async (
     token: string | null,
 ): Promise<boolean | null> => {
-
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
         return null;

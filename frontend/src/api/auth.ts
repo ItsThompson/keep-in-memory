@@ -36,3 +36,28 @@ export const getTokenWithGoogle = async (
 
     return parsedData.token;
 };
+
+export const logout = async (): Promise<boolean> => {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!response.ok) {
+        console.error("Logout failed:", response.statusText);
+        return false;
+    }
+
+    const data = await response.json();
+
+    if (data.statusCode !== 200) {
+        console.warn("Logout failed.");
+        return false;
+    }
+
+    console.log("Logout successful");
+    return true;
+};

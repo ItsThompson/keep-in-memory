@@ -5,6 +5,7 @@ import Description from "./description";
 import Link from "next/link";
 import { useAuth } from "../authContext";
 import SignInModal from "./sign_in_modal";
+import { logout } from "@/api/auth";
 
 interface TopbarProps {
     isSignedIn: boolean;
@@ -13,7 +14,7 @@ interface TopbarProps {
 export default function Topbar({
     isSignedIn = false,
 }: TopbarProps) {
-    const { setToken } = useAuth();
+    const { token, setToken } = useAuth();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -141,7 +142,7 @@ export default function Topbar({
                                         onClick={() => {
                                             googleLogout();
                                             setToken(null);
-                                            // TODO: delete refresh cookie
+                                            logout();
                                         }}
                                     >
                                         <img
