@@ -10,7 +10,6 @@ import Board from "./board";
 import { getCurrentGame } from "@/api/current_game";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
-import { googleLogout } from "@react-oauth/google";
 
 export default function EndScreen(
     recallResults: RecallResult[],
@@ -66,11 +65,8 @@ export default function EndScreen(
 
     async function fetchCurrentGameData() {
         const currentGameData: GameData | boolean | null =
-            await getCurrentGame(token);
+            await getCurrentGame(token, setToken);
         if (currentGameData === null) {
-            // TODO: get access token POST /refresh with refresh cookie
-            googleLogout();
-            setToken(null);
             redirect("/sign-in");
         }
 

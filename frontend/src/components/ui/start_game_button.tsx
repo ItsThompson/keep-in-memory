@@ -3,7 +3,6 @@ import IconButton from "./icon_button";
 import { getNewGame } from "@/api/new_game";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
-import { googleLogout } from "@react-oauth/google";
 
 interface StartGameButtonProps {
     onGameStartClick: (gameData: GameData) => void;
@@ -27,11 +26,8 @@ export default function StartGameButton({
             onClick={async () => {
                 try {
                     const data: GameData | false | null =
-                        await getNewGame(token);
+                        await getNewGame(token, setToken);
                     if (data === null) {
-                        // TODO: get access token POST /refresh with refresh cookie
-                        googleLogout();
-                        setToken(null);
                         redirect("/sign-in");
                     }
 

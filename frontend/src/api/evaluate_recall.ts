@@ -1,9 +1,13 @@
 import { RecallResult } from "@/constants/interfaces";
 import { parseRecallResultJSON } from "@/lib/utils";
+import { refreshAccessToken } from "./auth";
+import { googleLogout } from "@react-oauth/google";
 
 export const evaluateRecall = async (
     recallList: string[],
     token: string | null,
+    setToken: (token: string | null) => void,
+    withNewAccessToken: boolean = false,
 ): Promise<RecallResult[] | false | null> => {
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
@@ -25,8 +29,21 @@ export const evaluateRecall = async (
     );
 
     if (response.status === 403 || response.status === 401) {
-        console.warn("Token expired or invalid, redirecting to sign-in.");
-        return null;
+        if (withNewAccessToken) {
+            console.warn("Token expired or invalid, redirecting to sign-in.");
+            return null;
+        }
+
+        const newAccessToken = await refreshAccessToken();
+        if (!newAccessToken) {
+            console.warn("Token refresh failed, redirecting to sign-in.");
+            setToken(null);
+            googleLogout();
+            return null;
+        }
+
+        setToken(newAccessToken);
+        return evaluateRecall(recallList, newAccessToken, setToken, true);
     }
 
 

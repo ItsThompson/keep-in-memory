@@ -1,9 +1,19 @@
 import { GameData } from "@/constants/interfaces";
 import { parseGameDataJSON } from "@/lib/utils";
+import { refreshAccessToken } from "./auth";
+import { googleLogout } from "@react-oauth/google";
 
 export const getCurrentGame = async (
     token: string | null,
+    setToken: (token: string | null) => void,
+    withNewAccessToken: boolean = false,
 ): Promise<GameData | null | false> => {
+    /* Return Values
+    * null: when token is missing or irrecoverable
+    * false: when the request fails or there's no current game
+    * GameData if successful
+    */
+
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
         return null;
@@ -20,8 +30,21 @@ export const getCurrentGame = async (
     );
 
     if (response.status === 403 || response.status === 401) {
-        console.warn("Token expired or invalid, redirecting to sign-in.");
-        return null;
+        if (withNewAccessToken) {
+            console.warn("Token expired or invalid, redirecting to sign-in.");
+            return null;
+        }
+
+        const newAccessToken = await refreshAccessToken();
+        if (!newAccessToken) {
+            console.warn("Token refresh failed, redirecting to sign-in.");
+            setToken(null);
+            googleLogout();
+            return null;
+        }
+
+        setToken(newAccessToken);
+        return getCurrentGame(newAccessToken, setToken, true);
     }
 
     const data = await response.json();
@@ -47,6 +70,8 @@ export const getCurrentGame = async (
 
 export const removeCurrentGame = async (
     token: string | null,
+    setToken: (token: string | null) => void,
+    withNewAccessToken: boolean = false,
 ): Promise<boolean | null> => {
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
@@ -64,8 +89,21 @@ export const removeCurrentGame = async (
     );
 
     if (response.status === 403 || response.status === 401) {
-        console.warn("Token expired or invalid, redirecting to sign-in.");
-        return null;
+        if (withNewAccessToken) {
+            console.warn("Token expired or invalid, redirecting to sign-in.");
+            return null;
+        }
+
+        const newAccessToken = await refreshAccessToken();
+        if (!newAccessToken) {
+            console.warn("Token refresh failed, redirecting to sign-in.");
+            setToken(null);
+            googleLogout();
+            return null;
+        }
+
+        setToken(newAccessToken);
+        return removeCurrentGame(newAccessToken, setToken, true);
     }
 
     const data = await response.json();

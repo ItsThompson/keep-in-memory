@@ -6,7 +6,6 @@ import { getCurrentGame, removeCurrentGame } from "@/api/current_game";
 import { evaluateRecall } from "@/api/evaluate_recall";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
-import { googleLogout } from "@react-oauth/google";
 
 interface GameArenaProps {
     onGameStateChange: (gameState: GameState) => void;
@@ -25,12 +24,11 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     useEffect(() => {
         const fetchCurrentGame = async () => {
-            const gameData: GameData | boolean | null =
-                await getCurrentGame(token);
+            const gameData: GameData | boolean | null = await getCurrentGame(
+                token,
+                setToken,
+            );
             if (gameData === null) {
-                // TODO: get access token POST /refresh with refresh cookie
-                googleLogout();
-                setToken(null);
                 redirect("/sign-in");
             }
 
@@ -117,11 +115,11 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     };
 
     const restartGame = async () => {
-        const response: boolean | null = await removeCurrentGame(token);
+        const response: boolean | null = await removeCurrentGame(
+            token,
+            setToken,
+        );
         if (response === null) {
-            // TODO: get access token POST /refresh with refresh cookie
-            googleLogout();
-            setToken(null);
             redirect("/sign-in");
         }
         setGameState(GameState.NOT_STARTED);
@@ -135,11 +133,8 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
 
     const onSubmitItems = async (items: string[]) => {
         const recallResult: RecallResult[] | false | null =
-            await evaluateRecall(items, token);
+            await evaluateRecall(items, token, setToken);
         if (recallResult === null) {
-            // TODO: get access token POST /refresh with refresh cookie
-            googleLogout();
-            setToken(null);
             redirect("/sign-in");
         }
 
