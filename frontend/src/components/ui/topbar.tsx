@@ -11,9 +11,7 @@ interface TopbarProps {
     isSignedIn: boolean;
 }
 
-export default function Topbar({
-    isSignedIn = false,
-}: TopbarProps) {
+export default function Topbar({ isSignedIn = false }: TopbarProps) {
     const { setToken } = useAuth();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -27,8 +25,14 @@ export default function Topbar({
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // Close dropdown if clicked outside
+    // Close dropdown if clicked outside or if escape is pressed
     useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && isDropdownOpen) {
+                setIsDropdownOpen(false);
+            }
+        };
+
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 dropdownRef.current &&
@@ -38,9 +42,12 @@ export default function Topbar({
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        return () =>
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
             document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isDropdownOpen]);
 
     // Close info modal if clicked outside
     useEffect(() => {
@@ -85,7 +92,7 @@ export default function Topbar({
                     />
                 </div>
                 {isSignedIn ? (
-                    <div className="relative" ref={dropdownRef}>
+                    <div className="flex items-end justify-center">
                         <IconButton
                             src="/profile.svg"
                             alt="profile"
@@ -94,67 +101,69 @@ export default function Topbar({
                             height={32}
                             onClick={toggleDropdown}
                         />
-                        {isDropdownOpen && (
-                            <div className="absolute right-0 mt-5 w-48 bg-secondary rounded-lg shadow-lg">
-                                <ul className="py-2">
-                                    <li
-                                        className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
-                                        onClick={() =>
-                                            console.log("Stats clicked")
-                                        }
-                                    >
-                                        <img
-                                            src="/stats.svg"
-                                            alt="Stats"
-                                            className="w-5 h-5 mr-2"
-                                        />
-                                        Stats
-                                    </li>
-                                    <li
-                                        className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
-                                        onClick={() =>
-                                            console.log("Profile clicked")
-                                        }
-                                    >
-                                        <img
-                                            src="/person_profile.svg"
-                                            alt="Profile"
-                                            className="w-5 h-5 mr-2"
-                                        />
-                                        Profile
-                                    </li>
-                                    <li
-                                        className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
-                                        onClick={() =>
-                                            console.log("Settings clicked")
-                                        }
-                                    >
-                                        <img
-                                            src="/gear.svg"
-                                            alt="Settings"
-                                            className="w-5 h-5 mr-2"
-                                        />
-                                        Settings
-                                    </li>
+                        <div className="relative" ref={dropdownRef}>
+                            {isDropdownOpen && (
+                                <div className="absolute right-0 mt-5 w-48 bg-secondary rounded-lg shadow-lg">
+                                    <ul className="py-2">
+                                        <li
+                                            className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
+                                            onClick={() =>
+                                                console.log("Stats clicked")
+                                            }
+                                        >
+                                            <img
+                                                src="/stats.svg"
+                                                alt="Stats"
+                                                className="w-5 h-5 mr-2"
+                                            />
+                                            Stats
+                                        </li>
+                                        <li
+                                            className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
+                                            onClick={() =>
+                                                console.log("Profile clicked")
+                                            }
+                                        >
+                                            <img
+                                                src="/person_profile.svg"
+                                                alt="Profile"
+                                                className="w-5 h-5 mr-2"
+                                            />
+                                            Profile
+                                        </li>
+                                        <li
+                                            className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
+                                            onClick={() =>
+                                                console.log("Settings clicked")
+                                            }
+                                        >
+                                            <img
+                                                src="/gear.svg"
+                                                alt="Settings"
+                                                className="w-5 h-5 mr-2"
+                                            />
+                                            Settings
+                                        </li>
 
-                                    <li
-                                        className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
-                                        onClick={() => {
-                                            googleLogout();
-                                            setToken(null);
-                                            logout();
-                                        }}
-                                    >
-                                        <img
-                                            src="/signout.svg"
-                                            alt="Sign Out"
-                                            className="w-5 h-5 mr-2"
-                                        />
-                                        Sign Out
-                                    </li>
-                                </ul>
-                            </div>
-                        )}
+                                        <li
+                                            className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
+                                            onClick={() => {
+                                                googleLogout();
+                                                setToken(null);
+                                                logout();
+                                            }}
+                                        >
+                                            <img
+                                                src="/signout.svg"
+                                                alt="Sign Out"
+                                                className="w-5 h-5 mr-2"
+                                            />
+                                            Sign Out
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <button

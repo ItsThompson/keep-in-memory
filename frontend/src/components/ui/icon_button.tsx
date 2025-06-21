@@ -21,7 +21,7 @@ export default function IconButton({
     src,
     alt,
     description,
-    buttonText,
+    buttonText = "",
     className = "",
     textClassName = "",
     width,
