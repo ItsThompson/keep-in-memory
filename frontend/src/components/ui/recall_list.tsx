@@ -24,6 +24,7 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
     const [items, dispatch] = useReducer(reducer, []);
     const inputRef = useRef<HTMLInputElement>(null);
     const [itemText, setItemText] = useState("");
+    const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -108,9 +109,14 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
             <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
                 <button
                     className="rounded-lg text-center inline-flex items-center font-bold text-secondary bg-primary py-4 px-8 hover:scale-110 transition ease-in-out delay-50 duration-150"
-                    onClick={() => onSubmitItems(items)}
+                    disabled={isDisabled || items.length === 0}
+                    onClick={() => {
+                        setIsDisabled(true);
+                        onSubmitItems(items)
+
+                    }}
                 >
-                    Done
+                      {isDisabled ? 'Processing...' : 'Done'}
                 </button>
             </div>
         </div>

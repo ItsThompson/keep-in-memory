@@ -12,6 +12,30 @@ export default function StartGameButton({
     onGameStartClick,
 }: StartGameButtonProps) {
     const { token, setToken } = useAuth();
+
+    const fetchNewGame = async () => {
+        try {
+            const data: GameData | false | null = await getNewGame(
+                token,
+                setToken,
+            );
+            if (data === null) {
+                redirect("/sign-in");
+            }
+
+            if (!data) {
+                console.warn("Game start failed or already in progress.");
+                return;
+            }
+
+            onGameStartClick(data);
+            return;
+        } catch (error) {
+            console.error("Error starting game:", error);
+            return;
+        }
+    };
+
     return (
         <IconButton
             src="/start.svg"
@@ -23,27 +47,8 @@ export default function StartGameButton({
             width={24}
             height={24}
             isButton={true}
-            onClick={async () => {
-                try {
-                    const data: GameData | false | null =
-                        await getNewGame(token, setToken);
-                    if (data === null) {
-                        redirect("/sign-in");
-                    }
-
-                    if (!data) {
-                        console.warn(
-                            "Game start failed or already in progress.",
-                        );
-                        return;
-                    }
-
-                    onGameStartClick(data);
-                    return;
-                } catch (error) {
-                    console.error("Error starting game:", error);
-                    return;
-                }
+            onClick={() => {
+                fetchNewGame();
             }}
         />
     );
