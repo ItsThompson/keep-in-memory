@@ -50,7 +50,6 @@ export const getNewGame = async (
 
         setToken(newAccessToken);
         return getNewGame(newAccessToken, setToken, true);
-
     }
 
     const data = await response.json();
@@ -70,7 +69,7 @@ export const getNewGame = async (
         const gameDateCreated = body["date_created"];
         const gameDuration = body["game_duration"]; // in hours
         const time = new Date(
-            Date.parse(gameDateCreated) + gameDuration * 60 * 60 * 1000,
+            Date.parse(gameDateCreated) + gameDuration * 1000,
         );
         localStorage.setItem("expiryTime", time.toISOString());
         window.location.reload();

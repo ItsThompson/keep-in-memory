@@ -7,6 +7,9 @@ import RecallList from "./recall_list";
 import EndScreen from "./end_screen";
 import { useState } from "react";
 import StartGameButton from "./start_game_button";
+import { getCurrentGame } from "@/api/current_game";
+import { redirect } from "next/navigation";
+import { useAuth } from "../authContext";
 
 interface GameArenaComponents {
     aboveBoard?: React.ReactElement;
@@ -35,6 +38,7 @@ export default function GameStages({
 }: GameStagesProps): GameArenaComponents {
     const [recallResult, setRecallResult] = useState<RecallResult[]>([]);
     const [gameData, setGameData] = useState<GameData | null>(null);
+    const { token, setToken } = useAuth();
 
     const stages: Record<GameState, GameArenaComponents> = {
         [GameState.NOT_STARTED]: {
@@ -84,12 +88,26 @@ export default function GameStages({
             gameBoard: (
                 <RecallList
                     onSubmitItems={async (items) => {
+                        async function fetchCurrentGameData() {
+                            const currentGameData: GameData | boolean | null =
+                                await getCurrentGame(token, setToken);
+                            if (currentGameData === null) {
+                                redirect("/sign-in");
+                            }
+
+                            if (currentGameData === false) {
+                                return;
+                            }
+                            setGameData(currentGameData);
+                        }
+
+                        await fetchCurrentGameData();
                         setRecallResult(await onSubmitItems(items));
                     }}
                 />
             ),
         },
-        [GameState.ENDED]: EndScreen(recallResult),
+        [GameState.ENDED]: EndScreen(recallResult, gameData),
     };
 
     return stages[gameState] || stages[GameState.NOT_STARTED];

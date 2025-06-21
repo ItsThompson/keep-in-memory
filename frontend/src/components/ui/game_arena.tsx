@@ -43,7 +43,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
     useEffect(() => {
         const getGameEndTime = (game: GameData): Date => {
             return new Date(
-                game.dateCreated.getTime() + game.gameDuration * 60 * 60 * 1000,
+                game.dateCreated.getTime() + game.gameDuration * 1000,
             );
         };
 
@@ -101,16 +101,13 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         setGameState(GameState.LOCKED);
 
         const gameSettings = getGameSettings();
-        const time = new Date(
-            Date.now() + gameSettings.gameDuration * 60 * 60 * 1000,
-        );
+        const time = new Date(Date.now() + gameSettings.gameDuration * 1000);
 
         setUnlockTime(time);
         localStorage.setItem("expiryTime", time.toISOString());
     };
 
     const onUnlock = () => {
-        console.log("expired from UI");
         setExpiryCheckTrigger((prev) => prev + 1);
     };
 

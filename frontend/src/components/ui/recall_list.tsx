@@ -105,9 +105,9 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
                     )}
                 </div>
             </div>
-            <div className="my-2 flex items-center justify-center">
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
                 <button
-                    className="bg-primary text-secondary p-2 font-bold rounded-lg"
+                    className="rounded-lg text-center inline-flex items-center font-bold text-secondary bg-primary py-4 px-8 hover:scale-110 transition ease-in-out delay-50 duration-150"
                     onClick={() => onSubmitItems(items)}
                 >
                     Done

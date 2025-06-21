@@ -8,7 +8,7 @@ export default function GameOptions() {
     const defaultIndices = {
         gameModeIndex: 1,
         gameOptionsIndex: 2,
-        gameDurationIndex: 2,
+        gameDurationIndex: 0,
     };
 
     const gameModeOptions = ["remove one", "recall all"];
@@ -18,12 +18,15 @@ export default function GameOptions() {
         "items",
         "license plate",
     ];
-    const gameDurationOptions = ["06", "12", "24", "48"];
+    // const gameDurationOptions = ["06", "12", "24", "48"];
+    const gameDurationOptionsText = ["short (10 secs)", "long (24 hrs)"];
+    const gameDurationOptionsValues = [10, 86400]; // 10 seconds, 24 hours
 
     const [gameSettings, setGameSettings] = useState({
         gameMode: gameModeOptions[defaultIndices.gameModeIndex],
         gameItemType: gameItemOptions[defaultIndices.gameOptionsIndex],
-        gameDuration: parseInt(gameDurationOptions[defaultIndices.gameDurationIndex]),
+        gameDuration:
+            gameDurationOptionsValues[defaultIndices.gameDurationIndex],
     });
 
     useEffect(() => {
@@ -60,13 +63,13 @@ export default function GameOptions() {
             />
             <span className="text-white font-bold">|</span>
             <GameOptionTabs
-                items={gameDurationOptions}
+                items={gameDurationOptionsText}
                 defaultSelectedIndex={defaultIndices.gameDurationIndex}
                 className="mr-8"
                 updatedTabIndex={(index) => {
                     setGameSettings({
                         ...gameSettings,
-                        gameDuration: parseInt(gameDurationOptions[index]),
+                        gameDuration: gameDurationOptionsValues[index],
                     });
                 }}
             />

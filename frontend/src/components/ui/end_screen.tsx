@@ -5,19 +5,15 @@ import {
     ResultClassification,
 } from "@/constants/interfaces";
 import ArenaTabs from "./arena_tabs";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Board from "./board";
-import { getCurrentGame } from "@/api/current_game";
-import { useAuth } from "../authContext";
-import { redirect } from "next/navigation";
 
 export default function EndScreen(
     recallResults: RecallResult[],
+    gameData: GameData | null,
 ): GameArenaComponents {
     const defaultTabIndex = 0;
-    const { token, setToken } = useAuth();
     const [tabIndex, setTabIndex] = useState(defaultTabIndex);
-    const [gameData, setGameData] = useState<GameData | null>(null);
     const {
         truePositives,
         falsePositives,
@@ -63,23 +59,6 @@ export default function EndScreen(
         };
     }, [recallResults]);
 
-    async function fetchCurrentGameData() {
-        const currentGameData: GameData | boolean | null =
-            await getCurrentGame(token, setToken);
-        if (currentGameData === null) {
-            redirect("/sign-in");
-        }
-
-        if (currentGameData === false) {
-            return;
-        }
-        setGameData(currentGameData);
-    }
-
-    useEffect(() => {
-        fetchCurrentGameData();
-    }, []);
-
     return {
         aboveBoard: (
             <ArenaTabs
@@ -97,7 +76,7 @@ export default function EndScreen(
                         <Board gameData={gameData} />
                     ) : (
                         <div className="h-full flex justify-center items-center">
-                            <p>Loading Game Board</p>
+                            <p>Loading Game Board...</p>
                         </div>
                     )
                 ) : (
