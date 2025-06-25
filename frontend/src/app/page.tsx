@@ -26,7 +26,7 @@ export default function Home() {
     }
 
     if (loading) {
-        return <FullScreenLoading />;
+        return <FullScreenLoading text="Authenticating..." />;
     }
 
     return (

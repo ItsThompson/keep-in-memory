@@ -59,7 +59,7 @@ return {
         "Access-Control-Allow-Credentials": "true"
     },
     "body": json.dumps({
-        "accessToken": access_token
+        "token":token 
     }),
 }
 ```
@@ -77,7 +77,10 @@ if (!response.ok) {
   throw new Error("Failed to refresh token");
 }
 const data = await response.json();
-const accessToken = data.accessToken;
+
+... // error handling
+
+const accessToken = data.token;
 // Use the access token for subsequent requests
 ```
 
@@ -102,7 +105,7 @@ return {
         "Access-Control-Allow-Credentials": "true"
     },
     "body": json.dumps({
-        "accessToken": access_token
+        "token":token 
     }),
 }
 ```
@@ -112,7 +115,7 @@ return {
 ```ts
 fetch("/api/protected-route", {
   headers: {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${token}`,
   },
 });
 ```

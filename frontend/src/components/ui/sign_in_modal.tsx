@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { getTokenWithGoogle } from "@/api/auth";
 import { useAuth } from "../authContext";
+import Loading from "./loading_component";
 
 interface SignInModalProps {
     open: boolean;
@@ -53,9 +54,7 @@ export default function SignInModal({
 
                 <div className="flex flex-col items-center space-y-4 text-sm">
                     {retrievingToken ? (
-                        <p className="text-primary">
-                            Signing you in, please wait...
-                        </p>
+                        <Loading text="Signing you in, please wait" />
                     ) : (
                         <>
                             <p>Welcome! Please sign in to continue.</p>

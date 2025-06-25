@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { redirect } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import { getTokenWithGoogle } from "@/api/auth";
+import Loading from "@/components/ui/loading_component";
 
 export default function SignInPage() {
     const { setToken } = useAuth();
@@ -25,9 +26,7 @@ export default function SignInPage() {
 
                 <div className="flex flex-col items-center space-y-4 text-sm">
                     {retrievingToken ? (
-                        <p className="text-primary">
-                            Signing you in, please wait...
-                        </p>
+                        <Loading text="Signing you in, please wait" />
                     ) : (
                         <>
                             <p>Please sign in to access the game features.</p>
