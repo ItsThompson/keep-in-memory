@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useAuth } from "../authContext";
 import SignInModal from "./sign_in_modal";
 import { logout } from "@/api/auth";
+import { useRouter } from "next/navigation";
 
 interface TopbarProps {
     isSignedIn: boolean;
@@ -13,6 +14,7 @@ interface TopbarProps {
 
 export default function Topbar({ isSignedIn = false }: TopbarProps) {
     const { setToken } = useAuth();
+    const router = useRouter();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -108,7 +110,7 @@ export default function Topbar({ isSignedIn = false }: TopbarProps) {
                                         <li
                                             className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
                                             onClick={() =>
-                                                console.log("Stats clicked")
+                                                router.push("/stats")
                                             }
                                         >
                                             <img
@@ -117,19 +119,6 @@ export default function Topbar({ isSignedIn = false }: TopbarProps) {
                                                 className="w-5 h-5 mr-2"
                                             />
                                             Stats
-                                        </li>
-                                        <li
-                                            className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"
-                                            onClick={() =>
-                                                console.log("Profile clicked")
-                                            }
-                                        >
-                                            <img
-                                                src="/person_profile.svg"
-                                                alt="Profile"
-                                                className="w-5 h-5 mr-2"
-                                            />
-                                            Profile
                                         </li>
                                         <li
                                             className="flex items-center px-4 py-2 hover:bg-primary hover:text-secondary cursor-pointer"

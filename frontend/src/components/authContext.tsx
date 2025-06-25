@@ -6,23 +6,27 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 type AuthContextType = {
     token: string | null;
     setToken: (token: string | null) => void;
+    loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
 
     const value: AuthContextType = {
         token,
         setToken,
+        loading,
     };
 
     useEffect(() => {
         const tryRefreshToken = async () => {
             const newToken = await refreshAccessToken();
             setToken(newToken);
+            setLoading(false);
         }
         tryRefreshToken();
     }, [])

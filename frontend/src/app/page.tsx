@@ -9,10 +9,11 @@ import Description from "@/components/ui/description";
 import { useAuth } from "@/components/authContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import FullScreenLoading from "@/components/ui/full_screen_loading";
 
 export default function Home() {
     const [showGameOptions, setShowGameOptions] = useState(true);
-    const { token } = useAuth();
+    const { token, loading } = useAuth();
     const router = useRouter();
 
     function handleGameState(gameState: GameState) {
@@ -22,6 +23,10 @@ export default function Home() {
         }
         setShowGameOptions(false);
         return;
+    }
+
+    if (loading) {
+        return <FullScreenLoading />;
     }
 
     return (

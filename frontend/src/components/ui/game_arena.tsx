@@ -6,6 +6,7 @@ import { getCurrentGame, removeCurrentGame } from "@/api/current_game";
 import { evaluateRecall } from "@/api/evaluate_recall";
 import { useAuth } from "../authContext";
 import { redirect } from "next/navigation";
+import Loading from "./loading_component";
 
 interface GameArenaProps {
     onGameStateChange: (gameState: GameState) => void;
@@ -156,11 +157,15 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
         onSubmitItems,
     });
 
-    return isLoading ? (
-        <div className="h-full w-full sm:w-3/4 m-2 border-4 border-secondary rounded flex items-center justify-center">
-            <p>Loading data...</p>
-        </div>
-    ) : (
+    if (isLoading) {
+        return (
+            <div className="h-full w-full sm:w-3/4 m-2 border-4 border-secondary rounded flex items-center justify-center">
+                <Loading text="Loading Data" />
+            </div>
+        );
+    }
+
+    return (
         <>
             <div className="flex flex-col items-center m-2 w-full h-full">
                 {currentStage.aboveBoard}

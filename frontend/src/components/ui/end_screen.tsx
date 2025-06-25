@@ -7,6 +7,7 @@ import {
 import ArenaTabs from "./arena_tabs";
 import { useMemo, useState } from "react";
 import Board from "./board";
+import Loading from "./loading_component";
 
 export default function EndScreen(
     recallResults: RecallResult[],
@@ -76,7 +77,7 @@ export default function EndScreen(
                         <Board gameData={gameData} />
                     ) : (
                         <div className="h-full flex justify-center items-center">
-                            <p>Loading Game Board...</p>
+                            <Loading text="Loading Game Board" />
                         </div>
                     )
                 ) : (
