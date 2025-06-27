@@ -22,6 +22,8 @@ Full-stack web app for memory training and cognitive enhancement.
 
 </div>
 
+> 🧠 Try the app here: [https://keep-in-memory.vercel.app/](https://keep-in-memory.vercel.app/)
+
 ## Introduction
 This project is a full-stack web app where users can challenge their short-term memory by trying to remember as many items as possible from a displayed board. With a focus on minimalism and intuitive UX, the app has a clean interface for users to engage in. The main objectives for this project was to get used to the AWS ecosystem and serverless architecture, as well as to improve my React skills and hosting a live web app.
 
