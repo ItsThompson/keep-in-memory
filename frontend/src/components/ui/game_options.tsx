@@ -41,6 +41,7 @@ export default function GameOptions() {
         <div className="flex items-center justify-center sm:justify-between w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-2 mb-2 gap-2 sm:gap-5">
             <GameOptionTabs
                 items={gameModeOptions}
+                disabled_items={["remove one"]}
                 defaultSelectedIndex={defaultIndices.gameModeIndex}
                 className="ml-8"
                 updatedTabIndex={(index) => {
@@ -53,6 +54,11 @@ export default function GameOptions() {
             <span className="text-white font-bold">|</span>
             <GameOptionTabs
                 items={gameItemOptions}
+                disabled_items={[
+                    "colors & shapes",
+                    "locations",
+                    "license plate",
+                ]}
                 defaultSelectedIndex={defaultIndices.gameOptionsIndex}
                 updatedTabIndex={(index) => {
                     setGameSettings({

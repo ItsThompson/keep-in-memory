@@ -74,7 +74,7 @@ export const refreshAccessToken = async (): Promise<string | null> => {
     const data = await response.json();
 
     if(data.statusCode == 401) {
-        console.error("No refresh token found.");
+        console.warn("No refresh token found.");
         return null;
     }
 
@@ -84,7 +84,7 @@ export const refreshAccessToken = async (): Promise<string | null> => {
     }
     const parsedData = JSON.parse(data.body);
     if (!parsedData.token) {
-        console.error("Token not found in response data");
+        console.warn("Token not found in response data");
         return null;
     }
     return parsedData.token;

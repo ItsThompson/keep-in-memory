@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface GameOptionsProps {
     items: string[];
+    disabled_items?: string[];
     defaultSelectedIndex: number;
     className?: string;
     updatedTabIndex?: (index: number) => void;
@@ -11,6 +12,7 @@ interface GameOptionsProps {
 
 export default function GameOptionTabs({
     items,
+    disabled_items = [],
     defaultSelectedIndex,
     className = "",
     updatedTabIndex,
@@ -33,8 +35,12 @@ export default function GameOptionTabs({
             {items.map((item, index) => (
                 <button
                     key={index}
-                    className={`font-bold hover:cursor-pointer text-sm
-                    ${selectedIndex === index ? "text-primary" : "text-white"}`}
+                    className={`
+        font-bold text-sm
+        ${disabled_items.includes(item) ? "text-gray-500 line-through cursor-not-allowed" : selectedIndex === index ? "text-primary" : "text-white"}
+        ${disabled_items.includes(item) ? "" : "hover:cursor-pointer"}
+    `}
+                    disabled={disabled_items.includes(item)}
                     onClick={() => handleSelectedIndex(index)}
                 >
                     {item}
