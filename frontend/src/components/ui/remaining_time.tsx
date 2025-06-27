@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 interface RemainingTimeProps {
@@ -10,7 +10,7 @@ export default function RemainingTime({
     expiringTime,
     onTimeExpired,
 }: RemainingTimeProps) {
-    const calculateRemainingTime = () => {
+    const calculateRemainingTime = useCallback(() => {
         const remainingTime = expiringTime.getTime() - Date.now();
         const hours = Math.floor(remainingTime / (60 * 60 * 1000));
         const minutes = Math.floor((remainingTime % (60 * 60 * 1000)) / 60000);
@@ -34,7 +34,7 @@ export default function RemainingTime({
             }
             return `${seconds} seconds`;
         }
-    };
+    }, [expiringTime]);
 
     const [text, setText] = useState(calculateRemainingTime());
     const [expired, setExpired] = useState(false);
@@ -60,7 +60,7 @@ export default function RemainingTime({
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [expiringTime, onTimeExpired, expired]);
+    }, [expiringTime, onTimeExpired, expired, calculateRemainingTime]);
 
     return (
         <div className="flex flex-col gap-y-2 items-center rounded-lg bg-primary text-secondary font-bold p-2 m-2">

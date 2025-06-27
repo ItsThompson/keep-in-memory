@@ -38,7 +38,7 @@ export const getUserStats = async (
         if (!newAccessToken) {
             console.warn("Token refresh failed, redirecting to sign-in.");
             setToken(null);
-            googleLogout;
+            googleLogout();
             return null;
         }
 

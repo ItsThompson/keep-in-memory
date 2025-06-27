@@ -39,7 +39,7 @@ export default function GameArena({ onGameStateChange }: GameArenaProps) {
             setIsLoading(false);
         };
         fetchCurrentGame();
-    }, []);
+    }, [token, setToken]);
 
     useEffect(() => {
         const getGameEndTime = (game: GameData): Date => {
