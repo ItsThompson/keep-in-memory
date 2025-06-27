@@ -1,4 +1,9 @@
-import { GameData, RecallResult } from "@/constants/interfaces";
+import {
+    GameData,
+    NonSensitiveUserInfo,
+    RecallResult,
+    UserStats,
+} from "@/constants/interfaces";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -44,6 +49,37 @@ export function getGameSettings(): {
 
 export function replaceSpacesWithUnderscores(str: string): string {
     return str.replace(/\s+/g, "_");
+}
+
+export function parseUserStatsJSON(body: string): UserStats {
+    try {
+        const parsedJson = JSON.parse(body);
+        return {
+            totalGamesPlayed: parsedJson.total_games_played,
+            averageAccuracy: parseFloat(parsedJson.average_accuracy),
+            averagePrecision: parseFloat(parsedJson.average_precision),
+            averageRecall: parseFloat(parsedJson.average_recall),
+        };
+    } catch (error) {
+        console.error("Error parsing UserStats JSON:", error);
+        throw new Error("Invalid UserStats format");
+    }
+}
+
+export function parseNonSensitiveUserInfoJSON(
+    body: string,
+): NonSensitiveUserInfo {
+    try {
+        const parsedJson = JSON.parse(body);
+        return {
+            email: parsedJson.email,
+            name: parsedJson.name,
+            picture: parsedJson.picture,
+        };
+    } catch (error) {
+        console.error("Error parsing NonSensitiveUserInfo JSON:", error);
+        throw new Error("Invalid NonSensitiveUserInfo format");
+    }
 }
 
 export function parseGameDataJSON(body: string): GameData {

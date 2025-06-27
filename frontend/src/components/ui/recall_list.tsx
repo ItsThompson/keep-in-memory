@@ -108,7 +108,7 @@ export default function RecallList({ onSubmitItems }: RecallListProps) {
             </div>
             <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
                 <button
-                    className="rounded-lg text-center inline-flex items-center font-bold text-secondary bg-primary py-4 px-8 hover:scale-110 transition ease-in-out delay-50 duration-150"
+                    className={`rounded-lg text-center inline-flex items-center font-bold py-4 px-8 transition ease-in-out delay-75 duration-150 ${isDisabled ? "bg-secondary text-primary cursor-not-allowed" : "text-secondary bg-primary hover:scale-110"}`}
                     disabled={isDisabled || items.length === 0}
                     onClick={() => {
                         setIsDisabled(true);

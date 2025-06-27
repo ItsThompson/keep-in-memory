@@ -1,30 +1,31 @@
-import { RecallResult } from "@/constants/interfaces";
-import { parseRecallResultJSON } from "@/lib/utils";
+import { NonSensitiveUserInfo } from "@/constants/interfaces";
 import { refreshAccessToken } from "./auth";
 import { googleLogout } from "@react-oauth/google";
+import { parseNonSensitiveUserInfoJSON } from "@/lib/utils";
 
-export const evaluateRecall = async (
-    recallList: string[],
+export const getNonSensitiveUserInfo = async (
     token: string | null,
     setToken: (token: string | null) => void,
     withNewAccessToken: boolean = false,
-): Promise<RecallResult[] | false | null> => {
+): Promise<NonSensitiveUserInfo | null | false> => {
+    /* Return Values
+     * null: when token is missing or irrecoverable
+     * false: when the request fails or there's no current game
+     * NonSensitiveUserInfo if successful
+     */
+
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
         return null;
     }
 
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/evaluate-recall",
+        process.env.NEXT_PUBLIC_API_URL + `/non-sensitive-user-info`,
         {
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                recall_list: recallList,
-            }),
         },
     );
 
@@ -43,21 +44,21 @@ export const evaluateRecall = async (
         }
 
         setToken(newAccessToken);
-        return evaluateRecall(recallList, newAccessToken, setToken, true);
+        return getNonSensitiveUserInfo(newAccessToken, setToken, true);
     }
 
-
     const data = await response.json();
+
     if (!response.ok) {
-        console.error("Failed to evaluate recall:", data);
+        console.error("Failed to retrieve non-sensitive user info:", data);
         return false;
     }
 
     if (data.statusCode !== 200) {
-        console.warn("Recall evaluation returned non-200 status code:", data);
+        console.warn("No non-sensitive user info available");
         return false;
     }
 
-    console.log("Recall evaluation successful");
-    return parseRecallResultJSON(data.body);
+    console.log("Non-sensitive user info retrieved successfully");
+    return parseNonSensitiveUserInfoJSON(data.body);
 };

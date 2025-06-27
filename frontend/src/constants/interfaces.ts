@@ -43,3 +43,16 @@ export interface RecallResult {
     classification: ResultClassification;
 }
 
+
+export interface NonSensitiveUserInfo {
+    email: string;
+    name: string;
+    picture: string;
+}
+
+export interface UserStats {
+    totalGamesPlayed: number;
+    averageAccuracy: number; // Decimal
+    averagePrecision: number; // Decimal
+    averageRecall: number; // Decimal 
+}

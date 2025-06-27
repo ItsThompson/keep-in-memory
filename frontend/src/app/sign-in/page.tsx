@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/components/authContext";
 import { useEffect, useRef, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import { getTokenWithGoogle } from "@/api/auth";
 import Loading from "@/components/ui/loading_component";
@@ -12,6 +12,7 @@ export default function SignInPage() {
 
     const [retrievingToken, setRetrievingToken] = useState(false);
     const retrievingTokenRef = useRef<boolean>(false);
+    const router = useRouter();
 
     useEffect(() => {
         retrievingTokenRef.current = retrievingToken;
@@ -57,7 +58,7 @@ export default function SignInPage() {
                                     console.log("Token retrieved successfully");
 
                                     setToken(token);
-                                    redirect("/");
+                                    router.push("/");
                                 }}
                                 onError={() => {
                                     console.error(

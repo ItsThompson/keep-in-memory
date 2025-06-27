@@ -1,30 +1,30 @@
-import { RecallResult } from "@/constants/interfaces";
-import { parseRecallResultJSON } from "@/lib/utils";
+import { UserStats } from "@/constants/interfaces";
 import { refreshAccessToken } from "./auth";
 import { googleLogout } from "@react-oauth/google";
+import { parseUserStatsJSON } from "@/lib/utils";
 
-export const evaluateRecall = async (
-    recallList: string[],
+export const getUserStats = async (
     token: string | null,
     setToken: (token: string | null) => void,
     withNewAccessToken: boolean = false,
-): Promise<RecallResult[] | false | null> => {
+): Promise<UserStats | null | false> => {
+    /* Return Values
+     * null: when token is missing or irrecoverable
+     * false: when the request fails or there's no current game
+     * UserStats if successful
+     */
     if (!token) {
         console.warn("No token found, redirecting to sign-in page.");
         return null;
     }
 
     const response = await fetch(
-        process.env.NEXT_PUBLIC_API_URL + "/evaluate-recall",
+        process.env.NEXT_PUBLIC_API_URL + `/user-stats`, // TODO: Implement the actual API route in backend to fetch user stats
         {
-            method: "POST",
+            method: "GET",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                recall_list: recallList,
-            }),
         },
     );
 
@@ -38,26 +38,27 @@ export const evaluateRecall = async (
         if (!newAccessToken) {
             console.warn("Token refresh failed, redirecting to sign-in.");
             setToken(null);
-            googleLogout();
+            googleLogout;
             return null;
         }
 
         setToken(newAccessToken);
-        return evaluateRecall(recallList, newAccessToken, setToken, true);
+        return getUserStats(newAccessToken, setToken, true);
     }
 
-
     const data = await response.json();
+
     if (!response.ok) {
-        console.error("Failed to evaluate recall:", data);
+        console.error("Failed to retrieve user stats:", data);
         return false;
     }
 
     if (data.statusCode !== 200) {
-        console.warn("Recall evaluation returned non-200 status code:", data);
+        console.warn("No non-sensitive user stats available");
+        console.log(data);
         return false;
     }
 
-    console.log("Recall evaluation successful");
-    return parseRecallResultJSON(data.body);
+    console.log("Non-sensitive user stats retrieved successfully");
+    return parseUserStatsJSON(data.body);
 };
