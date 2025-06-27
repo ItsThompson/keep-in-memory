@@ -1,9 +1,5 @@
 import { GameData } from "@/constants/interfaces";
-import {
-    getGameSettings,
-    parseGameDataJSON,
-    replaceSpacesWithUnderscores,
-} from "@/lib/utils";
+import { getGameSettings, parseGameDataJSON } from "@/lib/utils";
 import { refreshAccessToken } from "./auth";
 import { googleLogout } from "@react-oauth/google";
 
@@ -19,8 +15,8 @@ export const getNewGame = async (
 
     const gameSettings = getGameSettings();
     const params = new URLSearchParams({
-        game_type: replaceSpacesWithUnderscores(gameSettings.gameMode),
-        number_of_items: "10",
+        game_type: "recall_all",
+        number_of_items: gameSettings.itemCount.toString(),
         game_duration: gameSettings.gameDuration.toString(), // in hours
     });
 

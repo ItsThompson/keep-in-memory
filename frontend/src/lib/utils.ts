@@ -12,44 +12,37 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getGameSettings(): {
-    gameMode: string;
-    gameItemType: string;
     gameDuration: number;
+    itemCount: number;
 } {
     try {
         const settings = localStorage.getItem("gameSettings");
 
         if (!settings) {
             return {
-                gameMode: "remove one",
-                gameItemType: "colors & shapes",
-                gameDuration: 24,
-            }; // Default to 24 hours if settings are missing
+                gameDuration: 10,
+                itemCount: 10,
+            };
         }
 
         const parsedSettings = JSON.parse(settings);
 
-        // Ensure gameDuration is a valid number, otherwise default to 24
-        const gameDuration =
-            typeof parsedSettings.gameDuration === "number" &&
-            parsedSettings.gameDuration > 0
-                ? parsedSettings.gameDuration
-                : 24;
-
-        return { ...parsedSettings, gameDuration };
+        return {
+            gameDuration: parsedSettings.gameDuration ?? 10,
+            itemCount: parsedSettings.itemCount ?? 10,
+        };
     } catch (error) {
         console.error("Error parsing gameSettings from localStorage:", error);
         return {
-            gameMode: "remove one",
-            gameItemType: "colors & shapes",
-            gameDuration: 24,
+            gameDuration: 10,
+            itemCount: 10,
         };
     }
 }
 
-export function replaceSpacesWithUnderscores(str: string): string {
-    return str.replace(/\s+/g, "_");
-}
+// export function replaceSpacesWithUnderscores(str: string): string {
+//     return str.replace(/\s+/g, "_");
+// }
 
 export function parseUserStatsJSON(body: string): UserStats {
     try {

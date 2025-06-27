@@ -3,74 +3,48 @@
 import { useEffect, useState } from "react";
 import GameOptionTabs from "./game_option_tabs";
 import { getGameSettings } from "@/lib/utils";
+import Counter from "./counter";
+import Loading from "./loading_component";
+
+// TODO: Create route for getting number of items in database
 
 export default function GameOptions() {
-    const defaultIndices = {
-        gameModeIndex: 1,
-        gameOptionsIndex: 2,
-        gameDurationIndex: 0,
-    };
-
-    const gameModeOptions = ["remove one", "recall all"];
-    const gameItemOptions = [
-        "colors & shapes",
-        "locations",
-        "items",
-        "license plate",
-    ];
-    // const gameDurationOptions = ["06", "12", "24", "48"];
     const gameDurationOptionsText = ["short (10 secs)", "long (24 hrs)"];
     const gameDurationOptionsValues = [10, 86400]; // 10 seconds, 24 hours
 
-    const [gameSettings, setGameSettings] = useState({
-        gameMode: gameModeOptions[defaultIndices.gameModeIndex],
-        gameItemType: gameItemOptions[defaultIndices.gameOptionsIndex],
-        gameDuration:
-            gameDurationOptionsValues[defaultIndices.gameDurationIndex],
-    });
+    const [gameSettings, setGameSettings] = useState<{
+        itemCount: number;
+        gameDuration: number;
+    } | null>(null);
 
     useEffect(() => {
         setGameSettings(getGameSettings());
     }, []);
-
     useEffect(() => {
-        localStorage.setItem("gameSettings", JSON.stringify(gameSettings));
+        if (gameSettings !== null) {
+            localStorage.setItem("gameSettings", JSON.stringify(gameSettings));
+        }
     }, [gameSettings]);
 
+    if (!gameSettings) return <Loading text="Loading game settings..." />;
+
     return (
-        <div className="flex items-center justify-center sm:justify-between w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-2 mb-2 gap-2 sm:gap-5">
-            <GameOptionTabs
-                items={gameModeOptions}
-                disabled_items={["remove one"]}
-                defaultSelectedIndex={defaultIndices.gameModeIndex}
-                className="ml-8"
-                updatedTabIndex={(index) => {
+        <div className="flex items-center justify-around w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-5 mb-2 gap-4 sm:gap-8">
+            <Counter
+                initialValue={gameSettings.itemCount}
+                max={100}
+                onChange={(val) => {
+                    console.log("Item count changed:", val);
                     setGameSettings({
                         ...gameSettings,
-                        gameMode: gameModeOptions[index],
-                    });
-                }}
-            />
-            <span className="text-white font-bold">|</span>
-            <GameOptionTabs
-                items={gameItemOptions}
-                disabled_items={[
-                    "colors & shapes",
-                    "locations",
-                    "license plate",
-                ]}
-                defaultSelectedIndex={defaultIndices.gameOptionsIndex}
-                updatedTabIndex={(index) => {
-                    setGameSettings({
-                        ...gameSettings,
-                        gameItemType: gameItemOptions[index],
+                        itemCount: val,
                     });
                 }}
             />
             <span className="text-white font-bold">|</span>
             <GameOptionTabs
                 items={gameDurationOptionsText}
-                defaultSelectedIndex={defaultIndices.gameDurationIndex}
+                defaultSelectedIndex={0}
                 className="mr-8"
                 updatedTabIndex={(index) => {
                     setGameSettings({
