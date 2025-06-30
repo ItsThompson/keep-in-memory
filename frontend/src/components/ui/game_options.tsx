@@ -32,7 +32,8 @@ export default function GameOptions() {
         <div className="flex items-center justify-around w-full sm:w-3/4 bg-secondary rounded-lg px-5 py-5 mb-2 gap-4 sm:gap-8">
             <Counter
                 initialValue={gameSettings.itemCount}
-                max={100}
+                min={8}
+                max={20}
                 onChange={(val) => {
                     console.log("Item count changed:", val);
                     setGameSettings({
