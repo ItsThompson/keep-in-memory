@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - "backend/lambdas/**"
-  workflow_dispatch:  # Manual trigger from GitHub Actions UI
+  workflow_dispatch: # Manual trigger from GitHub Actions UI
 
 jobs:
   detect-and-deploy:
@@ -16,16 +16,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for accurate diff
 
       - name: Find changed Lambda folders
         id: find-lambdas
         run: |
           echo "Detecting changed Lambda directories..."
 
-          # For manual trigger, compare against HEAD~1
+
           BASE_REF="${{ github.event.before }}"
           if [ -z "$BASE_REF" ]; then
-            BASE_REF=$(git rev-parse HEAD~1)
+            if git rev-parse HEAD~1 >/dev/null 2>&1; then
+              BASE_REF=$(git rev-parse HEAD~1)
+            else
+              # Fallback: Use the first commit as base, or skip
+              BASE_REF=$(git rev-list --max-parents=0 HEAD)
+            fi
           fi
 
           # Find changed Lambda directories
@@ -68,4 +75,3 @@ jobs:
             aws lambda update-function-code \
               --function-name ${{ matrix.lambda }} \
               --zip-file fileb://backend/dist/${{ matrix.lambda }}.zip
-
