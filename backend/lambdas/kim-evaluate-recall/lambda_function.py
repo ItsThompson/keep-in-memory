@@ -1,4 +1,4 @@
-# kim-evaluate-recall function
+# kim-evaluate-recall
 
 import json
 import re
