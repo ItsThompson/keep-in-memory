@@ -1,4 +1,4 @@
-# kim-remove-current-game
+# kim-remove-current-game function
 
 import json
 import boto3

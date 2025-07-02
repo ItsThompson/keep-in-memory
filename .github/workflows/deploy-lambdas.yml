@@ -65,15 +65,12 @@ jobs:
           cd backend/lambdas/${{ matrix.lambda }}
           zip -r ../../dist/${{ matrix.lambda }}.zip . -x "*.pyc" "__pycache__/*"
 
-      - name: Configure AWS CLI
-        uses: aws-actions/configure-aws-cli@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
-
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
             --function-name ${{ matrix.lambda }} \
             --zip-file fileb://backend/dist/${{ matrix.lambda }}.zip
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-2

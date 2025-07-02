@@ -1,4 +1,4 @@
-# kim-on-item-upload
+# kim-on-item-upload function
 
 import json
 import urllib.parse
