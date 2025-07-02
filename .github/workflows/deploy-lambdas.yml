@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "backend/lambdas/**"
+  workflow_dispatch:  # Manual trigger from GitHub Actions UI
 
 jobs:
   detect-and-deploy:
@@ -20,7 +21,15 @@ jobs:
         id: find-lambdas
         run: |
           echo "Detecting changed Lambda directories..."
-          changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^backend/lambdas/' | cut -d '/' -f3 | sort -u)
+
+          # For manual trigger, compare against HEAD~1
+          BASE_REF="${{ github.event.before }}"
+          if [ -z "$BASE_REF" ]; then
+            BASE_REF=$(git rev-parse HEAD~1)
+          fi
+
+          # Find changed Lambda directories
+          changed_dirs=$(git diff --name-only "$BASE_REF" ${{ github.sha }} | grep '^backend/lambdas/' | cut -d '/' -f3 | sort -u)
 
           if [ -z "$changed_dirs" ]; then
             echo "No Lambda changes detected."
