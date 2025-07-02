@@ -1,4 +1,4 @@
-# kim-auth
+# kim-auth function
 
 import boto3
 import jwt

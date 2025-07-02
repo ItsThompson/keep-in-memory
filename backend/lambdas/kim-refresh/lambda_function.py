@@ -1,4 +1,4 @@
-# kim-refresh
+# kim-refresh function
 
 import json
 import boto3

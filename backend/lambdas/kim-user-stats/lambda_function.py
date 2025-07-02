@@ -1,4 +1,4 @@
-# kim-user-stats
+# kim-user-stats function
 
 import json
 import boto3

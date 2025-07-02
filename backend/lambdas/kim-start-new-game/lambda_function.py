@@ -1,4 +1,4 @@
-# kim-start-new-game
+# kim-start-new-game function
 
 import json
 import boto3

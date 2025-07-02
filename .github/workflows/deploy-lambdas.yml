@@ -42,7 +42,7 @@ jobs:
             echo "No Lambda changes detected."
             echo "matrix={\"lambda\":[]}" >> $GITHUB_OUTPUT
           else
-            changed_json=$(printf '%s\n' $changed_dirs | jq -R . | jq -s .)
+            changed_json=$(printf '%s\n' $changed_dirs | jq -R . | jq -s -c .)
             echo "Changed Lambda directories: $changed_json"
             echo "matrix={\"lambda\": $changed_json}" >> $GITHUB_OUTPUT
           fi
