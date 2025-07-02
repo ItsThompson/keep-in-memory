@@ -9,27 +9,31 @@ jobs:
   detect-and-deploy:
     runs-on: ubuntu-latest
 
+    outputs:
+      matrix: ${{ steps.find-lambdas.outputs.matrix }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Find changed lambda folders
+      - name: Find changed Lambda folders
         id: find-lambdas
         run: |
           echo "Detecting changed Lambda directories..."
           changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^backend/lambdas/' | cut -d '/' -f3 | sort -u)
-          echo "Changed directories: $changed_dirs"
 
-          changed_json=$(printf '%s\n' $changed_dirs | jq -R . | jq -s .)
-          echo "matrix={\"lambda\": $changed_json}" >> $GITHUB_OUTPUT
-
-    outputs:
-      matrix: ${{ steps.find-lambdas.outputs.matrix }}
+          if [ -z "$changed_dirs" ]; then
+            echo "No Lambda changes detected."
+            echo "matrix={\"lambda\":[]}" >> $GITHUB_OUTPUT
+          else
+            changed_json=$(printf '%s\n' $changed_dirs | jq -R . | jq -s .)
+            echo "Changed Lambda directories: $changed_json"
+            echo "matrix={\"lambda\": $changed_json}" >> $GITHUB_OUTPUT
+          fi
 
   deploy:
     needs: detect-and-deploy
     runs-on: ubuntu-latest
-    if: ${{ length(fromJson(needs.detect-and-deploy.outputs.matrix).lambda) > 0 }}
     strategy:
       matrix: ${{ fromJson(needs.detect-and-deploy.outputs.matrix) }}
 
@@ -55,3 +59,4 @@ jobs:
             aws lambda update-function-code \
               --function-name ${{ matrix.lambda }} \
               --zip-file fileb://backend/dist/${{ matrix.lambda }}.zip
+
