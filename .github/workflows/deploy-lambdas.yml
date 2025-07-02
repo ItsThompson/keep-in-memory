@@ -1,0 +1,57 @@
+name: Deploy Changed Lambda Functions
+
+on:
+  push:
+    paths:
+      - "backend/lambdas/**"
+
+jobs:
+  detect-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Find changed lambda folders
+        id: find-lambdas
+        run: |
+          echo "Detecting changed Lambda directories..."
+          changed_dirs=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^backend/lambdas/' | cut -d '/' -f3 | sort -u)
+          echo "Changed directories: $changed_dirs"
+
+          changed_json=$(printf '%s\n' $changed_dirs | jq -R . | jq -s .)
+          echo "matrix={\"lambda\": $changed_json}" >> $GITHUB_OUTPUT
+
+    outputs:
+      matrix: ${{ steps.find-lambdas.outputs.matrix }}
+
+  deploy:
+    needs: detect-and-deploy
+    runs-on: ubuntu-latest
+    if: ${{ length(fromJson(needs.detect-and-deploy.outputs.matrix).lambda) > 0 }}
+    strategy:
+      matrix: ${{ fromJson(needs.detect-and-deploy.outputs.matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create zip directory
+        run: mkdir -p backend/dist
+
+      - name: Zip Lambda code
+        run: |
+          cd backend/lambdas/${{ matrix.lambda }}
+          zip -r ../../dist/${{ matrix.lambda }}.zip . -x "*.pyc" "__pycache__/*"
+
+      - name: Deploy to AWS Lambda
+        uses: aws-actions/aws-cli-action@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+          inline: |
+            aws lambda update-function-code \
+              --function-name ${{ matrix.lambda }} \
+              --zip-file fileb://backend/dist/${{ matrix.lambda }}.zip

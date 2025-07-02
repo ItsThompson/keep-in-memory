@@ -84,19 +84,23 @@ export default function StatsPage() {
                 <div className="flex flex-col items-start m-2">
                     <p className="text-sm">avg. accuracy</p>
                     <p className="text-xl font-bold">
-                        {userStats!.averageAccuracy * 100}%
+                        {Math.ceil(userStats!.averageAccuracy * 100 * 100) /
+                            100}
+                        %
                     </p>
                 </div>
                 <div className="flex flex-col items-start m-2">
                     <p className="text-sm">avg. precision</p>
                     <p className="text-xl font-bold">
-                        {userStats!.averagePrecision * 100}%
+                        {Math.ceil(userStats!.averagePrecision * 100 * 100) /
+                            100}
+                        %
                     </p>
                 </div>
                 <div className="flex flex-col items-start m-2">
                     <p className="text-sm">avg. recall</p>
                     <p className="text-xl font-bold">
-                        {userStats!.averageRecall * 100}%
+                        {Math.ceil(userStats!.averageRecall * 100 * 100) / 100}%
                     </p>
                 </div>
             </div>
