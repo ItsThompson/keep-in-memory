@@ -1,3 +1,5 @@
+# kim-auth
+
 import boto3
 import jwt
 from botocore.exceptions import ClientError
