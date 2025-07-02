@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/authContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
                 <AuthProvider>
                     <GoogleOAuthProvider clientId={clientID}>
                         {children}
+                        <Analytics />
                     </GoogleOAuthProvider>
                 </AuthProvider>
             </body>
