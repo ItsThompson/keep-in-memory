@@ -1,4 +1,4 @@
-# kim-issue-token function
+# kim-issue-jwt function
 
 import json
 from google.oauth2 import id_token
