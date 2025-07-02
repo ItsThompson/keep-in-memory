@@ -1,4 +1,4 @@
-# kim-non-sensitive-user-info function
+# kim-non-sensitive-user-info
 
 import json
 import boto3

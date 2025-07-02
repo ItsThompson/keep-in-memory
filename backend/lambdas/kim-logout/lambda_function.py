@@ -1,4 +1,4 @@
-# kim-logout function
+# kim-logout
 
 import json
 import boto3

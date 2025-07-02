@@ -1,4 +1,4 @@
-# kim-get-current-game function
+# kim-get-current-game
 
 import json
 import boto3

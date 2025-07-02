@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - "backend/lambdas/**"
-  workflow_dispatch: # Manual trigger from GitHub Actions UI
 
 jobs:
   detect-and-deploy:
