@@ -17,8 +17,22 @@ export default function Board({ gameData }: BoardProps) {
         });
     }, [gameData.items]);
 
+    const itemNames = useMemo(() => {
+        const getNameFromUrl = (url: string): string => {
+            const parts = url.split("/");
+            const filename = parts[parts.length - 1];
+            return filename.split(".")[0]; // Remove file extension
+        };
+
+        return gameData.items.map((item) => {
+            return item.names[0] || getNameFromUrl(item.objectUrl);
+        });
+    }, [gameData.items]);
+
     const containerRef = useRef<HTMLDivElement>(null);
     const [positions, setPositions] = useState<Position[]>([]);
+    const [itemsPlacedSuccessfully, setItemsPlacedSuccessfully] =
+        useState<boolean>(true);
 
     const imageSize = 100; // Size of each image in pixels
     const imagePadding = 50; // Padding around the images to prevent overlap
@@ -44,6 +58,8 @@ export default function Board({ gameData }: BoardProps) {
                 });
             };
 
+            let placementFailed = false;
+
             for (let i = 0; i < imageUrls.length; i++) {
                 let attempts = 0;
                 let x, y;
@@ -58,6 +74,7 @@ export default function Board({ gameData }: BoardProps) {
                 } while (doesOverlap({ x, y }) && attempts < 100);
 
                 if (attempts >= 100) {
+                    placementFailed = true;
                     console.warn("Could not place all items without overlap.");
                 }
 
@@ -65,20 +82,23 @@ export default function Board({ gameData }: BoardProps) {
             }
 
             setPositions(placed);
+
+            return placementFailed;
         };
-        placeImages();
+        const placementFailed = placeImages();
+        setItemsPlacedSuccessfully(!placementFailed);
         window.addEventListener("resize", placeImages);
         return () => window.removeEventListener("resize", placeImages);
     }, [imageUrls]);
 
     // for each item
-    return (
+    return itemsPlacedSuccessfully ? (
         <div
             ref={containerRef}
             className="relative w-full h-full overflow-hidden"
         >
             {positions.map((pos, index) => (
-            // Could potentially use next/image for optimization.
+                // Could potentially use next/image for optimization.
                 <img
                     key={index}
                     src={imageUrls[index]}
@@ -98,6 +118,28 @@ export default function Board({ gameData }: BoardProps) {
                     }}
                 />
             ))}
+        </div>
+    ) : (
+        <div className="h-full flex flex-col justify-between">
+            <div className="flex flex-col">
+                <div className="m-2 p-2 rounded bg-primary text-secondary font-bold">
+                    <p>Memorize these items!</p>
+                </div>
+                <div className="max-h-[70vh] overflow-auto">
+                    {itemNames.length > 0 && (
+                        <ul className="my-2 mx-6 flex flex-col space-y-2">
+                            {itemNames.map((item, index) => (
+                                <li
+                                    key={index}
+                                    className="p-2 rounded bg-white text-black"
+                                >
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
